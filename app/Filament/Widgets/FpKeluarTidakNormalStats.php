@@ -9,7 +9,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class FpKeluarTidakNormalStats extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
-
+    protected static bool $isDiscovered = false;
     protected function getStats(): array
     {
         return [

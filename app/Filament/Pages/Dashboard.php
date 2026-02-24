@@ -7,7 +7,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
-
+use App\Filament\Widgets\FpSummaryStats;
 use App\Filament\Widgets\FpAktifStatsWidget;
 use App\Filament\Widgets\FpKeluarNormalStats;
 use App\Filament\Widgets\FpKeluarTidakNormalStats;
@@ -16,13 +16,7 @@ use App\Filament\Widgets\FpChart;
 class Dashboard extends BaseDashboard
 {
     use HasFiltersForm;
-
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
-
-    // Paksa 3 kolom untuk header widgets
-    protected int | string | array $columns = 3;
-
-
 
     public function filtersForm(Form $form): Form
     {
@@ -47,5 +41,11 @@ class Dashboard extends BaseDashboard
                     ->columns(2)
                     ->compact(),
             ]);
+    }
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\FpallStats::class,
+        ];
     }
 }

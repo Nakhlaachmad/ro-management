@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Filament\Widgets;
-
 use App\Models\Fp;
 use Filament\Widgets\ChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -12,7 +11,7 @@ class FpChart extends ChartWidget
 {
     use InteractsWithPageFilters;
 
-    protected static ?string $heading = 'Grafik FP Masuk per Tanggal';
+    protected static ?string $heading = 'Grafik FP Masuk';
     protected int|string|array $columnSpan = 'full';
 
     protected function getData(): array
@@ -20,9 +19,18 @@ class FpChart extends ChartWidget
         $startDate = $this->filters['startDate'] ?? now()->startOfMonth()->toDateString();
         $endDate = $this->filters['endDate'] ?? now()->endOfMonth()->toDateString();
 
-        $start = Carbon::parse($startDate);
-        $end = Carbon::parse($endDate);
+        $start = Carbon::parse($startDate)->startOfDay();
+        $end = Carbon::parse($endDate)->endOfDay();
+
         $days = $start->diffInDays($end);
+
+        $results = Fp::whereBetween('tanggal_masuk', [$start, $end])
+            ->selectRaw('DATE(tanggal_masuk) as tanggal, COUNT(*) as total')
+            ->groupBy('tanggal')
+            ->pluck('total', 'tanggal');
+
+        $labels = [];
+        $data = [];
 
         /*
         |--------------------------------------------------------------------------
@@ -30,76 +38,99 @@ class FpChart extends ChartWidget
         |--------------------------------------------------------------------------
         */
 
-        if ($days > 180) {
+        // Jika lebih dari 90 hari → Monthly
+       $days = $start->diffInDays($end);
 
-            $results = Fp::whereBetween('tanggal_masuk', [$start, $end])
-                ->selectRaw('DATE_FORMAT(tanggal_masuk, "%Y-%m") as bulan, COUNT(*) as total')
-                ->groupBy('bulan')
-                ->pluck('total', 'bulan');
+$labels = [];
+$data = [];
 
-            $period = CarbonPeriod::create(
-                $start->copy()->startOfMonth(),
-                '1 month',
-                $end->copy()->startOfMonth()
-            );
+/*
+|--------------------------------------------------------------------------
+| > 90 Hari → WEEKLY (Sabtu - Jumat)
+|--------------------------------------------------------------------------
+*/
+if ($days > 90) {
 
-            $labels = [];
-            $data = [];
+    $current = $start->copy()->startOfWeek(Carbon::SATURDAY);
 
-            foreach ($period as $date) {
-                $key = $date->format('Y-m');
-                $labels[] = $date->format('M Y');
-                $data[] = $results[$key] ?? 0;
-            }
+    while ($current <= $end) {
 
-        } else {
+        $weekStart = $current->copy();
+        $weekEnd = $current->copy()->endOfWeek(Carbon::FRIDAY);
 
-            $results = Fp::whereBetween('tanggal_masuk', [$start, $end])
-                ->selectRaw('DATE(tanggal_masuk) as tanggal, COUNT(*) as total')
-                ->groupBy('tanggal')
-                ->pluck('total', 'tanggal');
-
-            $period = CarbonPeriod::create($start, $end);
-
-            $labels = [];
-            $data = [];
-
-            foreach ($period as $date) {
-                $key = $date->format('Y-m-d');
-                $labels[] = $date->format('d M');
-                $data[] = $results[$key] ?? 0;
-            }
+        if ($weekEnd > $end) {
+            $weekEnd = $end;
         }
 
+        $total = 0;
+
+        foreach (CarbonPeriod::create($weekStart, $weekEnd) as $day) {
+            $total += $results[$day->format('Y-m-d')] ?? 0;
+        }
+
+        $labels[] = $weekStart->format('d M') . ' - ' . $weekEnd->format('d M');
+        $data[] = $total;
+
+        $current->addWeek();
+    }
+
+/*
+|--------------------------------------------------------------------------
+| 31 - 60 Hari → Per 3 Hari
+|--------------------------------------------------------------------------
+*/
+} elseif ($days > 30) {
+
+    $current = $start->copy();
+
+    while ($current <= $end) {
+
+        $periodStart = $current->copy();
+        $periodEnd = $current->copy()->addDays(2);
+
+        if ($periodEnd > $end) {
+            $periodEnd = $end;
+        }
+
+        $total = 0;
+
+        foreach (CarbonPeriod::create($periodStart, $periodEnd) as $day) {
+            $total += $results[$day->format('Y-m-d')] ?? 0;
+        }
+
+        $labels[] = $periodStart->format('d M') . ' - ' . $periodEnd->format('d M');
+        $data[] = $total;
+
+        $current->addDays(3);
+    }
+
+/*
+|--------------------------------------------------------------------------
+| ≤ 30 Hari → Per Hari
+|--------------------------------------------------------------------------
+*/
+} else {
+
+    foreach (CarbonPeriod::create($start, $end) as $day) {
+        $labels[] = $day->format('d M');
+        $data[] = $results[$day->format('Y-m-d')] ?? 0;
+    }
+}
         /*
         |--------------------------------------------------------------------------
-        | MOVING AVERAGE 7 HARI
+        | EMA SMOOTHING (LANDai ala grafik emas)
         |--------------------------------------------------------------------------
         */
 
-        $movingAverage = [];
-        $window = 7;
+        $periodEma = count($data) > 12 ? 6 : 4;
+        $multiplier = 2 / ($periodEma + 1);
 
-        foreach ($data as $index => $value) {
-            $slice = array_slice($data, max(0, $index - $window + 1), $window);
-            $movingAverage[] = round(array_sum($slice) / count($slice), 2);
-        }
+        $ema = [];
+        $ema[0] = $data[0] ?? 0;
 
-        /*
-        |--------------------------------------------------------------------------
-        | DYNAMIC SMOOTHING
-        |--------------------------------------------------------------------------
-        */
-
-        if ($days <= 30) {
-            $tension = 0.5;
-            $pointRadius = 3;
-        } elseif ($days <= 90) {
-            $tension = 0.3;
-            $pointRadius = 0;
-        } else {
-            $tension = 0.1;
-            $pointRadius = 0;
+        foreach ($data as $i => $value) {
+            if ($i == 0) continue;
+            $ema[$i] = round((($value - $ema[$i - 1]) * $multiplier) + $ema[$i - 1], 2);
         }
 
         /*
@@ -108,42 +139,28 @@ class FpChart extends ChartWidget
         |--------------------------------------------------------------------------
         */
 
-        $first = $data[0] ?? 0;
-        $last = end($data) ?: 0;
+        $first = $ema[0] ?? 0;
+        $last = end($ema) ?: 0;
 
         $isUptrend = $last >= $first;
 
-        $lineColor = $isUptrend ? '#22c55e' : '#ef4444';
+        $lineColor = $isUptrend ? '#16a34a' : '#dc2626';
         $bgColor = $isUptrend
-            ? 'rgba(34,197,94,0.15)'
-            : 'rgba(239,68,68,0.15)';
+            ? 'rgba(22,163,74,0.15)'
+            : 'rgba(220,38,38,0.15)';
 
         return [
             'datasets' => [
-
-                // DATA UTAMA
                 [
-                    'label' => 'FP Masuk',
-                    'data' => $data,
+                    'label' => 'Trend FP',
+                    'data' => $ema,
                     'borderColor' => $lineColor,
                     'backgroundColor' => $bgColor,
                     'fill' => true,
-                    'tension' => $tension,
+                    'tension' => 0.65,
                     'cubicInterpolationMode' => 'monotone',
-                    'pointRadius' => $pointRadius,
-                    'borderWidth' => 3,
-                ],
-
-                // MOVING AVERAGE
-                [
-                    'label' => 'Rata-rata 7 Hari',
-                    'data' => $movingAverage,
-                    'borderColor' => '#60a5fa',
-                    'backgroundColor' => 'transparent',
-                    'borderDash' => [6, 6],
-                    'tension' => 0.4,
                     'pointRadius' => 0,
-                    'borderWidth' => 2,
+                    'borderWidth' => 3,
                 ],
             ],
             'labels' => $labels,
@@ -159,45 +176,19 @@ class FpChart extends ChartWidget
     {
         return [
             'responsive' => true,
-            'animation' => [
-                'duration' => 800,
-                'easing' => 'easeInOutQuart',
-            ],
-            'interaction' => [
-                'mode' => 'nearest',
-                'axis' => 'x',
-                'intersect' => false,
-            ],
             'plugins' => [
                 'legend' => [
-                    'display' => true,
+                    'display' => false,
                 ],
                 'tooltip' => [
                     'mode' => 'index',
                     'intersect' => false,
                 ],
-                'zoom' => [
-                    'zoom' => [
-                        'wheel' => [
-                            'enabled' => true,
-                        ],
-                        'pinch' => [
-                            'enabled' => true,
-                        ],
-                        'mode' => 'x',
-                    ],
-                    'pan' => [
-                        'enabled' => true,
-                        'mode' => 'x',
-                    ],
-                ],
             ],
             'scales' => [
                 'y' => [
-                    'beginAtZero' => true,
-                    'grid' => [
-                        'color' => 'rgba(255,255,255,0.04)',
-                    ],
+                    'beginAtZero' => false,
+                    'grace' => '15%',
                 ],
                 'x' => [
                     'grid' => [

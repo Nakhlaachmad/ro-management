@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Filament\Resources\FpResource\Pages;
-
+use Filament\Forms;
 use App\Filament\Resources\FpResource;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables;
@@ -16,7 +16,7 @@ class FpKeluarTidakNormal extends ListRecords
 {
     protected static string $resource = FpResource::class;
 
-    protected static ?string $navigationGroup = 'Fps';
+    // protected static ?string $navigationGroup = 'Fps';
     // protected static ?string $navigationParentItem = 'Fps';
     protected static ?string $navigationLabel = 'FP Keluar Tidak Normal';
     protected static ?int $navigationSort = 4;
@@ -40,13 +40,13 @@ class FpKeluarTidakNormal extends ListRecords
             Tables\Columns\TextColumn::make('team.name')
                 ->label('Team'),
 
-Tables\Columns\TextColumn::make('status')
-    ->badge()
-    ->color(fn ($state) => $state === 'nonaktif' ? 'warning' : 'success'),
+            Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->color(fn ($state) => $state === 'nonaktif' ? 'warning' : 'success'),
 
 
-            Tables\Columns\TextColumn::make('tanggal_masuk')
-                ->date(),
+            // Tables\Columns\TextColumn::make('tanggal_masuk')
+            //     ->date(),
 
             Tables\Columns\TextColumn::make('tanggal_keluar')
                 ->date(),
@@ -56,74 +56,150 @@ Tables\Columns\TextColumn::make('status')
         ];
     }
 
-public function table(Table $table): Table
-{
-    return parent::table($table)
-
-        // ✅ Paksa pakai kolom dari page ini
-        ->columns([
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query($this->getTableQuery())
+            ->recordUrl(null)
+            ->defaultSort('created_at', 'desc')
+            ->columns([
             Tables\Columns\TextColumn::make('name')
                 ->label('Nama FP')
-                ->searchable(),
+                ->searchable()
+                ->action(
+                    Tables\Actions\Action::make('view')
+                        ->modalHeading(fn ($record) => 'Detail FP - ' . $record->name)
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Tutup')
+                        ->fillForm(fn ($record) => [
+                            'name' => $record->name,
+                            'team' => $record->team?->name,
+                            'no_tlfn' => $record->no_tlfn,
+                            'grade' => $record->grade,
+                            'jalur' => $record->jalur,
+                            'status' => $record->status,
+                            'tanggal_masuk' => $record->tanggal_masuk,
+                            'tanggal_keluar' => $record->tanggal_keluar,
+                            'comment' => $record->comment,
+                        ])
+                        ->form([
+                            Forms\Components\TextInput::make('name')
+                                ->label('Nama')
+                                ->disabled(),
 
-            Tables\Columns\TextColumn::make('team.name')
-                ->label('Team'),
+                            Forms\Components\TextInput::make('team')
+                                ->label('Team')
+                                ->disabled(),
 
-Tables\Columns\TextColumn::make('status')
-    ->badge()
-    ->color(fn ($state) => $state === 'nonaktif' ? 'warning' : 'success'),
+                            Forms\Components\TextInput::make('no_tlfn')
+                                ->label('No Telepon')
+                                ->disabled(),
 
+                            Forms\Components\TextInput::make('grade')
+                                ->disabled(),
 
-            Tables\Columns\TextColumn::make('tanggal_masuk')
-                ->label('Tanggal Masuk')
-                ->date(),
+                            Forms\Components\TextInput::make('jalur')
+                                ->disabled(),
 
-            Tables\Columns\TextColumn::make('tanggal_keluar')
-                ->label('Tanggal Keluar')
-                ->date(),
+                            Forms\Components\TextInput::make('status')
+                                ->disabled(),
 
-            Tables\Columns\TextColumn::make('comment')
-                ->label('Comment')
-                ->wrap(),
-        ])
+                            Forms\Components\DatePicker::make('tanggal_masuk')
+                                ->disabled(),
 
-        ->actions([
+                            Forms\Components\DatePicker::make('tanggal_keluar')
+                                ->disabled(),
 
-            // ✏️ Edit hanya jika TIDAK nonaktif
-            EditAction::make()
-                ->visible(fn ($record) =>
-                    $record->status !== 'nonaktif'
+                            Forms\Components\Textarea::make('comment')
+                                ->disabled(),
+                        ])
                 ),
 
-            // 🗑 Delete hanya jika TIDAK nonaktif
-            DeleteAction::make()
-                ->visible(fn ($record) =>
-                    $record->status !== 'nonaktif'
-                ),
 
-            // 💬 Comment
-            Action::make('comment')
-                ->label('Tambah Comment')
-                ->icon('heroicon-o-chat-bubble-left')
-                ->visible(fn ($record) =>
-                    $record->status === 'nonaktif' &&
-                    !is_null($record->tanggal_keluar) &&
-                    empty($record->comment)
-                )
-                ->form([
-                    Textarea::make('comment')
-                        ->label('Comment')
-                        ->required()
-                        ->rows(3),
-                ])
-                ->action(function ($record, array $data) {
-                    $record->comment = $data['comment'];
-                    $record->save();
-                }),
-        ])
+                Tables\Columns\TextColumn::make('team')
+                    ->label('Team')
+                    ->getStateUsing(function ($record) {
+                        return $record->team
+                            ? $record->team->name . ' > ' . $record->team->team
+                            : '-';
+                    })
+                    ->sortable(query: function ($query, $direction) {
+                        $query->orderBy('team_id', $direction);
+                    }),
 
-        ->bulkActions([]);
-}
+                Tables\Columns\TextColumn::make('grade')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('jalur')
+                    ->sortable(),
+
+                Tables\Columns\BadgeColumn::make('status')
+                    ->colors([
+                        'warning' => 'nonaktif',
+                    ]),
+
+                // Tables\Columns\TextColumn::make('tanggal_masuk')
+                //     ->label('Tanggal Masuk')
+                //     ->date(),
+
+                Tables\Columns\TextColumn::make('tanggal_keluar')
+                    ->label('Tanggal Keluar')
+                    ->date(),
+
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Comment')
+                    ->wrap(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('grade')
+                    ->options([
+                        'A' => 'A',
+                        'B' => 'B',
+                    ]),
+
+                Tables\Filters\SelectFilter::make('jalur')
+                    ->options([
+                        'RO' => 'RO',
+                        'MGM' => 'MGM',
+                    ]),
+
+                Tables\Filters\SelectFilter::make('team_id')
+                    ->label('Team')
+                    ->relationship('team', 'team'),
+            ])
+            ->actions([
+
+                EditAction::make()
+                    ->visible(fn ($record) =>
+                        $record->status !== 'nonaktif'
+                    ),
+
+                DeleteAction::make()
+                    ->visible(fn ($record) =>
+                        $record->status !== 'nonaktif'
+                    ),
+
+                Action::make('comment')
+                    ->label('Tambah Comment')
+                    ->icon('heroicon-o-chat-bubble-left')
+                    ->visible(fn ($record) =>
+                        $record->status === 'nonaktif' &&
+                        !is_null($record->tanggal_keluar) &&
+                        empty($record->comment)
+                    )
+                    ->form([
+                        Textarea::make('comment')
+                            ->label('Comment')
+                            ->required()
+                            ->rows(3),
+                    ])
+                    ->action(function ($record, array $data) {
+                        $record->comment = $data['comment'];
+                        $record->save();
+                    }),
+            ])
+            ->bulkActions([]);
+    }
 
 
     protected function getHeaderWidgets(): array

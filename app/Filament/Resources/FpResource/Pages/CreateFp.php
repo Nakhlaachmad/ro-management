@@ -15,4 +15,9 @@ class CreateFp extends CreateRecord
         $data['created_by'] = Auth::id();
         return $data;
     }
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
 }

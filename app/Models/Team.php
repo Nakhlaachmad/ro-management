@@ -8,7 +8,10 @@ use App\Models\Fp;
 
 class Team extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'team',
+    ];
 
     public function fps(): HasMany
     {

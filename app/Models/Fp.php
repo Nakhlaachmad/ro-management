@@ -13,15 +13,23 @@ class Fp extends Model
     protected $fillable = [
         'name',
         'alamat',
+        'alamat_ktp',
         'no_tlfn',
+        'no_rekening',
+        'no_ktp',
+        'tempat_lahir',
+        'tanggal_lahir',
         'lulusan',
-        'tanggal_masuk',
-        'tanggal_keluar', // ✅ tambahkan
+        'grade',
         'team_id',
+        'jalur',
+        'tanggal_masuk',
+        'tanggal_keluar',
         'status',
         'created_by',
-        'comment', // kalau pakai comment
+        'comment',
     ];
+
 
     protected $casts = [
         'tanggal_masuk' => 'date',

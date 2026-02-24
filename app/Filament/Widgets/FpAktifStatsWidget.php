@@ -10,11 +10,7 @@ class FpAktifStatsWidget extends BaseWidget
 {
     // Agar widget memenuhi lebar layar Dashboard
     protected int|string|array $columnSpan = 'full';
-
-
-    // Agar konten di dalamnya terbagi menjadi 3 kolom (berjejer)
-    protected static ?int $columns = 3; 
-
+    protected static bool $isDiscovered = false;
     protected function getStats(): array
     {
         return [

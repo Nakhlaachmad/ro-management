@@ -15,10 +15,10 @@ class TeamStats extends BaseWidget
                 $query->where('status', 'aktif');
             }
         ])->get()->map(function ($team) {
-            return Stat::make(
-                $team->name,
-                $team->aktif_count . ' Anggota Aktif'
-            );
+        return Stat::make(
+            $team->name . ' > ' . $team->team,
+            $team->aktif_count . ' Anggota Aktif'
+        );
         })->toArray();
     }
 }

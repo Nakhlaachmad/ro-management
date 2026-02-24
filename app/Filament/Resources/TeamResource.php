@@ -31,12 +31,17 @@ class TeamResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->label('Nama Atasan')
+                    ->required()
+                    ->maxLength(255),
+
+                TextInput::make('team')
                     ->label('Nama Team')
                     ->required()
-                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
             ]);
     }
+
     public static function getWidgets(): array
     {
         return [
@@ -58,13 +63,18 @@ public static function table(Table $table): Table
         )
         ->columns([
             TextColumn::make('name')
-                ->label('Nama Team')
+                ->label('Nama MM')
                 ->searchable(),
+            TextColumn::make('team')
+                ->label('Nama Team')
+                ->searchable()
+                ->sortable(),
 
             TextColumn::make('aktif_count')
                 ->label('Total Anggota Aktif')
                 ->badge()
-                ->color('success'),
+                ->color('success')
+                ->sortable(),
         ])
         ->actions([
             Tables\Actions\EditAction::make(),
