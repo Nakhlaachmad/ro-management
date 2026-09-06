@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Providers\Filament;
+use Filament\Navigation\MenuItem;
+use Filament\View\PanelsRenderHook;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -21,15 +23,38 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $portalUrl = rtrim(trim((string) config('services.portal_sso.issuer', '')), '/');
+        $iwacsDashboardUrl = filter_var($portalUrl, FILTER_VALIDATE_URL) !== false
+            ? $portalUrl.'/dashboard'
+            : '/';
+
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('')
             ->login()
-            ->brandName('Database RO')
-            ->colors([
-                'primary' => Color::Amber,
+            ->userMenuItems([
+                // Kembali tidak mengakhiri sesi RO, sehingga pengguna dapat
+                // membuka RO lagi dari dashboard IWACS tanpa login ulang.
+                'back-to-iwacs' => MenuItem::make()
+                    ->label('Kembali ke IWACS')
+                    ->url($iwacsDashboardUrl)
+                    ->icon('heroicon-o-arrow-uturn-left')
+                    ->color('gray')
+                    ->sort(90),
+                // Aksi logout bawaan Filament menggunakan RoLogoutResponse:
+                // sesi RO dan IWACS dihapus melalui tiket sekali pakai.
+                'logout' => MenuItem::make()
+                    ->label('Logout')
+                    ->url(fn (): string => route('portal.sso.global-logout'))
+                    ->icon('heroicon-o-arrow-left-on-rectangle')
+                    ->color('danger')
+                    ->sort(100),
             ])
+            ->brandLogo(asset('images/3.png'))
+            ->darkModeBrandLogo(asset('images/4.png'))
+            ->darkMode(true)
+            ->brandLogoHeight('150px')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

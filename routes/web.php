@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\JwtSsoController;
+use App\Http\Controllers\GlobalLogoutController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/sso/jwt-login', JwtSsoController::class)
+    ->middleware('throttle:20,1')
+    ->name('portal.sso.jwt-login');
+
+Route::post('/sso/global-logout', GlobalLogoutController::class)
+    ->middleware(['auth', 'throttle:10,1'])
+    ->name('portal.sso.global-logout');
+
+
+Route::get('/up', static fn () => response()->noContent())
+    ->name('health');

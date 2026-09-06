@@ -2,43 +2,57 @@
 
 namespace App\Filament\Resources;
 use App\Filament\Resources\TeamResource\Pages;
-use App\Filament\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
 
 class TeamResource extends Resource
 {
-
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Teams';
     protected static ?string $navigationGroup = null;
     protected static ?int $navigationSort = 3;
 
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label('Nama Atasan')
+                    ->label('Nama MM')
                     ->required()
                     ->maxLength(255),
 
-                TextInput::make('team')
+                Select::make('team')
                     ->label('Nama Team')
-                    ->required()
-                    ->maxLength(255),
+                    ->options(
+                        Team::query()
+                            ->pluck('team', 'team') // value & label sama
+                            ->toArray()
+                    )
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        TextInput::make('team')
+                            ->label('Nama Team Baru')
+                            ->required(),
+					])	
+                    ->createOptionUsing(function (array $data) {
+                        $team = Team::firstOrCreate([
+                            'team' => $data['team'],
+                        ], [
+                            'name' => $data['team'],
+                        ]);
+
+                        return $team->team;
+                    })
+                    ->required(),
             ]);
     }
 
@@ -49,40 +63,36 @@ class TeamResource extends Resource
         ];
     }
 
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->query(
+                Team::withCount([
+                    'fps as aktif_count' => function ($query) {
+                        $query->where('status', 'aktif');
+                    }
+                ])
+            )
+            ->columns([
+                TextColumn::make('name')
+                    ->label('Nama MM')
+                    ->searchable(),
+                TextColumn::make('team')
+                    ->label('Nama Team')
+                    ->searchable()
+                    ->sortable(),
 
-
-public static function table(Table $table): Table
-{
-    return $table
-        ->query(
-            Team::withCount([
-                'fps as aktif_count' => function ($query) {
-                    $query->where('status', 'aktif');
-                }
+                TextColumn::make('aktif_count')
+                    ->label('Total Anggota Aktif')
+                    ->badge()
+                    ->color('success')
+                    ->sortable(),
             ])
-        )
-        ->columns([
-            TextColumn::make('name')
-                ->label('Nama MM')
-                ->searchable(),
-            TextColumn::make('team')
-                ->label('Nama Team')
-                ->searchable()
-                ->sortable(),
-
-            TextColumn::make('aktif_count')
-                ->label('Total Anggota Aktif')
-                ->badge()
-                ->color('success')
-                ->sortable(),
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
-        ]);
-}
-
-
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ]);
+    }
 
     public static function getRelations(): array
     {
@@ -99,8 +109,6 @@ public static function table(Table $table): Table
             'edit' => Pages\EditTeam::route('/{record}/edit'),
         ];
     }
-
-
 
     public static function canViewAny(): bool
     {

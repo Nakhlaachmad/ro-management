@@ -7,11 +7,6 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
-use App\Filament\Widgets\FpSummaryStats;
-use App\Filament\Widgets\FpAktifStatsWidget;
-use App\Filament\Widgets\FpKeluarNormalStats;
-use App\Filament\Widgets\FpKeluarTidakNormalStats;
-use App\Filament\Widgets\FpChart;
 
 class Dashboard extends BaseDashboard
 {
@@ -46,6 +41,9 @@ class Dashboard extends BaseDashboard
     {
         return [
             \App\Filament\Widgets\FpallStats::class,
+            \App\Filament\Widgets\FpPerTeamStats::class,
+            \App\Filament\Widgets\FpKeluarNormalTable::class,
+            \App\Filament\Widgets\FpKeluarTidakNormalTable::class,
         ];
     }
 }

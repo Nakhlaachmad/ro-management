@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CreateFp extends CreateRecord
 {
-    protected static string $resource = FpResource::class; // WAJIB ADA
+    protected static string $resource = FpResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

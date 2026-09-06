@@ -63,6 +63,28 @@ return [
             ]) : [],
         ],
 
+        // Hanya dipakai oleh perintah pemindahan data satu kali dari MariaDB.
+        // Aplikasi RO pada Dokploy tetap menggunakan koneksi default `pgsql`.
+        'legacy_mysql' => [
+            'driver' => 'mysql',
+            'url' => env('LEGACY_MYSQL_URL'),
+            'host' => env('LEGACY_MYSQL_HOST', '127.0.0.1'),
+            'port' => env('LEGACY_MYSQL_PORT', '3306'),
+            'database' => env('LEGACY_MYSQL_DATABASE', 'forge'),
+            'username' => env('LEGACY_MYSQL_USERNAME', 'forge'),
+            'password' => env('LEGACY_MYSQL_PASSWORD', ''),
+            'unix_socket' => env('LEGACY_MYSQL_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('LEGACY_MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

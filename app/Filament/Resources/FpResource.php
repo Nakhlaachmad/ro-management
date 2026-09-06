@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Filament\Resources;
+use Carbon\Carbon;
 use Filament\Forms;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Resources\FpResource\Pages;
@@ -16,7 +19,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Action;
-use Carbon\Carbon;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
 
 class FpResource extends Resource
 {
@@ -25,13 +29,9 @@ class FpResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?int $navigationSort = 1;
 
-    // ===============================
-    // 🔐 PERMISSION CONTROL
-    // ===============================
-
     public static function canViewAny(): bool
     {
-        return Gate::allows('fp.view');
+        return true;
     }
 
     public static function canCreate(): bool
@@ -51,10 +51,6 @@ class FpResource extends Resource
             && $record->status === 'aktif';
     }
 
-    // ===============================
-    // 📋 FORM
-    // ===============================
-
     public static function form(Form $form): Form
     {
         return $form->schema([
@@ -65,15 +61,18 @@ class FpResource extends Resource
 
             TextInput::make('no_tlfn')
                 ->label('No Telepon')
-                ->required(),
+                ->required()
+                ->rules(['required', 'regex:/^[0-9]{10,13}$/']),
 
             TextInput::make('no_rekening')
-                ->label('No Rekening')
-                ->required(),
+                ->label('No Rekening BCA')
+                ->required()
+                ->rules(['required', 'regex:/^[0-9]+$/']),
 
             TextInput::make('no_ktp')
                 ->label('No KTP')
-                ->required(),
+                ->required()
+                ->rules(['required', 'regex:/^[0-9]{16}$/']),
 
             Textarea::make('alamat_ktp')
                 ->label('Alamat KTP')
@@ -110,7 +109,14 @@ class FpResource extends Resource
 
             DatePicker::make('tanggal_masuk')
                 ->default(now())
-                ->required(),
+                ->required()
+                ->rule(function () {
+                    return function (string $attribute, $value, \Closure $fail) {
+                        if (Carbon::parse($value)->isWeekend()) {
+                            $fail('Tanggal tidak boleh hari Sabtu atau Minggu.');
+                        }
+                    };
+                }),
 
             Select::make('team_id')
                 ->label('Team')
@@ -124,7 +130,7 @@ class FpResource extends Resource
                 ->searchable()
                 ->preload()
                 ->required(),
-  
+
             Select::make('status')
                 ->options([
                     'aktif' => 'Aktif',
@@ -132,28 +138,16 @@ class FpResource extends Resource
                 ])
                 ->default('aktif')
                 ->required()
-                ->reactive()
-                ->afterStateUpdated(function ($state, callable $set) {
-                    if ($state === 'nonaktif') {
-                        $set('tanggal_keluar', now());
-                    } else {
-                        $set('tanggal_keluar', null);
-                    }
-                }),
-
-
+                ->disabled(fn ($livewire) => $livewire instanceof CreateRecord)
+                ->visible(fn ($livewire) => $livewire instanceof CreateRecord)
         ]);
     }
-
-    // ===============================
-    // 📊 TABLE
-    // ===============================
 
     public static function table(Table $table): Table
     {
         return $table
             ->recordUrl(null)
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('id', 'desc')
             ->columns([
 
             TextColumn::make('name')
@@ -164,42 +158,110 @@ class FpResource extends Resource
                         ->modalHeading(fn ($record) => 'Detail FP - ' . $record->name)
                         ->modalSubmitAction(false)
                         ->modalCancelActionLabel('Tutup')
-                        ->fillForm(fn ($record) => [
-                            'name' => $record->name,
-                            'no_tlfn' => $record->no_tlfn,
-                            'no_rekening' => $record->no_rekening,
-                            'no_ktp' => $record->no_ktp,
-                            'alamat_ktp' => $record->alamat_ktp,
-                            'alamat' => $record->alamat,
-                            'tempat_lahir' => $record->tempat_lahir,
-                            'tanggal_lahir' => $record->tanggal_lahir,
-                            'lulusan' => $record->lulusan,
-                            'grade' => $record->grade,
-                            'jalur' => $record->jalur,
-                            'tanggal_masuk' => $record->tanggal_masuk,
-                            'tanggal_keluar' => $record->tanggal_keluar,
-                            'comment' => $record->comment,
-                        ])
+                        ->fillForm(function ($record) {
+
+                            $team = $record->team
+                                ? $record->team->name . ' > ' . $record->team->team
+                                : '-';
+
+                            if (!$record->tanggal_keluar) {
+                                $status = 'FP Aktif';
+                            } else {
+                                $batas = \Carbon\Carbon::parse($record->tanggal_masuk)->addMonths(2);
+
+                                $status = $record->tanggal_keluar >= $batas
+                                    ? 'FP Keluar Normal'
+                                    : 'FP Keluar Tidak Normal';
+                            }
+
+                            return [
+                                'name' => $record->name,
+                                'team' => $team,
+                                'status' => $status,
+                                'no_tlfn' => $record->no_tlfn,
+                                'grade' => $record->grade,
+                                'jalur' => $record->jalur,
+                                'tanggal_masuk' => $record->tanggal_masuk,
+                                'tanggal_keluar' => $record->tanggal_keluar,
+                                'no_rekening' => $record->no_rekening,
+                                'no_ktp' => $record->no_ktp,
+                                'alamat_ktp' => $record->alamat_ktp,
+                                'alamat' => $record->alamat,
+                                'tempat_lahir' => $record->tempat_lahir,
+                                'tanggal_lahir' => $record->tanggal_lahir,
+                                'lulusan' => $record->lulusan,
+                                'comment' => $record->comment,
+                            ];
+                        })
                         ->form([
-                            Forms\Components\TextInput::make('name')->disabled(),
-                            Forms\Components\TextInput::make('no_tlfn')->disabled(),
-                            Forms\Components\TextInput::make('no_rekening')->disabled(),
-                            Forms\Components\TextInput::make('no_ktp')->disabled(),
-                            Forms\Components\Textarea::make('alamat_ktp')->disabled(),
-                            Forms\Components\Textarea::make('alamat')->disabled(),
-                            Forms\Components\TextInput::make('tempat_lahir')->disabled(),
-                            Forms\Components\DatePicker::make('tanggal_lahir')->disabled(),
-                            Forms\Components\TextInput::make('lulusan')->disabled(),
-                            Forms\Components\TextInput::make('grade')->disabled(),
-                            Forms\Components\TextInput::make('jalur')->disabled(),
-                            Forms\Components\DatePicker::make('tanggal_masuk')->disabled(),
-                            Forms\Components\DatePicker::make('tanggal_keluar')->disabled(),
-                            Forms\Components\Textarea::make('comment')->disabled(),
+                            Forms\Components\Grid::make(3) // 2 kolom utama
+                                ->schema([
+
+                                    Forms\Components\TextInput::make('name')
+                                        ->columnSpan(3)
+                                        ->disabled(),
+
+                                    // ====== BAGIAN DATA RINGKAS ======
+                                    Forms\Components\TextInput::make('team')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('jalur')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('grade')
+                                        ->disabled(),
+
+                                    Forms\Components\DatePicker::make('tanggal_masuk')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('tanggal_keluar')
+                                        ->label('Tanggal Keluar')
+                                        ->disabled()
+                                        ->formatStateUsing(function ($state) {
+                                            return $state
+                                                ? \Carbon\Carbon::parse($state)->format('d/m/Y')
+                                                : '-';
+                                        }),
+                                    
+                                    Forms\Components\TextInput::make('status')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('no_tlfn')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('no_rekening')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('no_ktp')
+                                        ->disabled(),
+
+                                    Forms\Components\Textarea::make('alamat_ktp')
+                                        ->columnSpan(3)
+                                        ->rows(2)
+                                        ->disabled(),
+
+                                    Forms\Components\Textarea::make('alamat')
+                                        ->columnSpan(3)
+                                        ->rows(2)
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('tempat_lahir')
+                                        ->disabled(),
+
+                                    Forms\Components\DatePicker::make('tanggal_lahir')
+                                        ->disabled(),
+
+                                    Forms\Components\TextInput::make('lulusan')
+                                        ->disabled(),
+
+                                    Forms\Components\Textarea::make('comment')
+                                        ->columnSpan(3)
+                                        ->rows(2)
+                                        ->disabled()
+                                        ->formatStateUsing(fn ($state) => filled($state) ? $state : '-'),
+                                ])
                         ])
                 ),
-
-
-
                 Tables\Columns\TextColumn::make('team')
                     ->label('Team')
                     ->getStateUsing(function ($record) {
@@ -228,7 +290,7 @@ class FpResource extends Resource
                             return 'FP Aktif';
                         }
 
-                        $batas = Carbon::parse($record->tanggal_masuk)->addMonths(3);
+                        $batas = Carbon::parse($record->tanggal_masuk)->addMonths(2);
 
                         if ($record->tanggal_keluar >= $batas) {
                             return 'FP Keluar Normal';
@@ -244,21 +306,7 @@ class FpResource extends Resource
                             default => 'gray',
                         };
                     }),
-
-                // TextColumn::make('tanggal_masuk')
-                //     ->label('Tanggal Masuk')
-                //     ->date(),
-
-                // TextColumn::make('tanggal_keluar')
-                //     ->label('Tanggal Keluar')
-                //     ->date('d M Y')
-                //     ->placeholder('—')
-                //     ->formatStateUsing(function ($state, $record) {
-                //         return $record->status === 'nonaktif'
-                //             ? $state
-                //             : null;
-                //     }),
-
+                    
                 TextColumn::make('comment')
                     ->label('Comment')
                     ->wrap(),
@@ -288,31 +336,14 @@ class FpResource extends Resource
                     ->relationship('team', 'team'),
             ])
 
+
             ->actions([
+                Tables\Actions\EditAction::make()
+                    ->visible(fn ($livewire) => $livewire instanceof \App\Filament\Resources\FpResource\Pages\FpAktif),
 
-                Tables\Actions\EditAction::make(),
-
-                Tables\Actions\DeleteAction::make(),
-
-                Action::make('comment')
-                    ->label('Tambah Comment')
-                    ->icon('heroicon-o-chat-bubble-left')
-                    ->visible(fn ($record) =>
-                        Gate::allows('fp.comment') &&
-                        $record->status === 'nonaktif' &&
-                        !is_null($record->tanggal_keluar) &&
-                        empty($record->comment)
-                    )
-                    ->form([
-                        Textarea::make('comment')
-                            ->label('Comment')
-                            ->required(),
-                    ])
-                    ->action(function ($record, array $data) {
-                        $record->update([
-                            'comment' => $data['comment'],
-                        ]);
-                    }),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn ($livewire) => $livewire instanceof \App\Filament\Resources\FpResource\Pages\FpAktif),
+                    
             ])
             ->actionsAlignment('start');
     }
@@ -326,36 +357,46 @@ class FpResource extends Resource
     // 📌 NAVIGATION
     // ===============================
 
+
+
 public static function getNavigationItems(): array
 {
-    return [
+    $items = [];
 
-        NavigationItem::make('FP')
+    if (Gate::allows('fp.view')) {
+        $items[] = NavigationItem::make('FP')
             ->group('FP')
             ->icon('heroicon-o-rectangle-stack')
             ->url(static::getUrl())
-            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.index')),
+            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.index'));
+    }
 
-        NavigationItem::make('FP Aktif')
+    if (Gate::allows('fp.aktif.view')) {
+        $items[] = NavigationItem::make('FP Aktif')
             ->group('FP')
             ->icon('heroicon-o-check-circle')
             ->url(static::getUrl('aktif'))
-            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.aktif')),
+            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.aktif'));
+    }
 
-        NavigationItem::make('FP Keluar Normal')
+    if (Gate::allows('fp.keluar.normal.view')) {
+        $items[] = NavigationItem::make('FP Keluar Normal')
             ->group('FP')
             ->icon('heroicon-o-arrow-right-circle')
             ->url(static::getUrl('keluar-normal'))
-            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.keluar-normal')),
+            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.keluar-normal'));
+    }
 
-        NavigationItem::make('FP Keluar Tidak Normal')
+    if (Gate::allows('fp.keluar.tidak.normal.view')) {
+        $items[] = NavigationItem::make('FP Keluar Tidak Normal')
             ->group('FP')
             ->icon('heroicon-o-exclamation-circle')
             ->url(static::getUrl('keluar-tidak-normal'))
-            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.keluar-tidak-normal')),
-    ];
-}
+            ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.fps.keluar-tidak-normal'));
+    }
 
+    return $items;
+}
 
     public static function getPages(): array
     {

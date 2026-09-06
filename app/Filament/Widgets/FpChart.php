@@ -31,141 +31,163 @@ class FpChart extends ChartWidget
 
         $labels = [];
         $data = [];
+        $days = $start->diffInDays($end);
+        $labels = [];
+        $data = [];
 
-        /*
-        |--------------------------------------------------------------------------
-        | AUTO GROUPING
-        |--------------------------------------------------------------------------
-        */
+        $isWorkday = function ($date) {
+            return $date->isWeekday(); 
+        };
 
-        // Jika lebih dari 90 hari → Monthly
-       $days = $start->diffInDays($end);
 
-$labels = [];
-$data = [];
+        if ($days > 1095) {
 
-/*
-|--------------------------------------------------------------------------
-| > 90 Hari → WEEKLY (Sabtu - Jumat)
-|--------------------------------------------------------------------------
-*/
-if ($days > 90) {
+            $period = CarbonPeriod::create(
+                $start->copy()->startOfYear(),
+                '1 year',
+                $end->copy()->startOfYear()
+            );
 
-    $current = $start->copy()->startOfWeek(Carbon::SATURDAY);
+            foreach ($period as $date) {
 
-    while ($current <= $end) {
+                $yearStart = $date->copy()->startOfYear();
+                $yearEnd = $date->copy()->endOfYear();
 
-        $weekStart = $current->copy();
-        $weekEnd = $current->copy()->endOfWeek(Carbon::FRIDAY);
+                if ($yearStart < $start) {
+                    $yearStart = $start;
+                }
 
-        if ($weekEnd > $end) {
-            $weekEnd = $end;
+                if ($yearEnd > $end) {
+                    $yearEnd = $end;
+                }
+
+                $total = 0;
+
+                foreach (CarbonPeriod::create($yearStart, $yearEnd) as $day) {
+                    if ($isWorkday($day)) {
+                        $total += $results[$day->format('Y-m-d')] ?? 0;
+                    }
+                }
+
+                $labels[] = $date->format('Y');
+                $data[] = $total;
+            }
+
+        } elseif ($days > 180) {
+
+            $period = CarbonPeriod::create(
+                $start->copy()->startOfMonth(),
+                '1 month',
+                $end->copy()->startOfMonth()
+            );
+
+            foreach ($period as $date) {
+
+                $monthStart = $date->copy()->startOfMonth();
+                $monthEnd = $date->copy()->endOfMonth();
+
+                if ($monthStart < $start) {
+                    $monthStart = $start;
+                }
+
+                if ($monthEnd > $end) {
+                    $monthEnd = $end;
+                }
+
+                $total = 0;
+
+                foreach (CarbonPeriod::create($monthStart, $monthEnd) as $day) {
+                    if ($isWorkday($day)) {
+                        $total += $results[$day->format('Y-m-d')] ?? 0;
+                    }
+                }
+
+                $labels[] = $date->format('M Y');
+                $data[] = $total;
+            }
+
+        } elseif ($days > 30) {
+
+            $current = $start->copy()->startOfWeek(Carbon::MONDAY);
+
+            while ($current <= $end) {
+
+                $weekStart = $current->copy()->startOfWeek(Carbon::MONDAY);
+                $weekEnd = $current->copy()->endOfWeek(Carbon::FRIDAY);
+
+                if ($weekStart < $start) {
+                    $weekStart = $start;
+                }
+
+                if ($weekEnd > $end) {
+                    $weekEnd = $end;
+                }
+
+                $total = 0;
+
+                foreach (CarbonPeriod::create($weekStart, $weekEnd) as $day) {
+                    if ($isWorkday($day)) {
+                        $total += $results[$day->format('Y-m-d')] ?? 0;
+                    }
+                }
+
+                $labels[] = $weekStart->format('d M') . ' - ' . $weekEnd->format('d M');
+                $data[] = $total;
+
+                $current->addWeek();
+            }
+
+        } else {
+
+            foreach (CarbonPeriod::create($start, $end) as $day) {
+
+                if (!$isWorkday($day)) {
+                    continue; // skip Sabtu & Minggu
+                }
+
+                $labels[] = $day->format('d M');
+                $data[] = $results[$day->format('Y-m-d')] ?? 0;
+            }
         }
 
-        $total = 0;
+                $periodEma = count($data) > 12 ? 6 : 4;
+                $multiplier = 2 / ($periodEma + 1);
 
-        foreach (CarbonPeriod::create($weekStart, $weekEnd) as $day) {
-            $total += $results[$day->format('Y-m-d')] ?? 0;
-        }
+                $ema = [];
+                $ema[0] = $data[0] ?? 0;
 
-        $labels[] = $weekStart->format('d M') . ' - ' . $weekEnd->format('d M');
-        $data[] = $total;
+                foreach ($data as $i => $value) {
+                    if ($i == 0) continue;
+                    $ema[$i] = round((($value - $ema[$i - 1]) * $multiplier) + $ema[$i - 1], 2);
+                }
 
-        $current->addWeek();
-    }
+                $first = $ema[0] ?? 0;
+                $last = end($ema) ?: 0;
 
-/*
-|--------------------------------------------------------------------------
-| 31 - 60 Hari → Per 3 Hari
-|--------------------------------------------------------------------------
-*/
-} elseif ($days > 30) {
+                $isUptrend = $last >= $first;
 
-    $current = $start->copy();
+                $lineColor = $isUptrend ? '#16a34a' : '#dc2626';
+                $bgColor = $isUptrend
+                    ? 'rgba(22,163,74,0.15)'
+                    : 'rgba(220,38,38,0.15)';
 
-    while ($current <= $end) {
-
-        $periodStart = $current->copy();
-        $periodEnd = $current->copy()->addDays(2);
-
-        if ($periodEnd > $end) {
-            $periodEnd = $end;
-        }
-
-        $total = 0;
-
-        foreach (CarbonPeriod::create($periodStart, $periodEnd) as $day) {
-            $total += $results[$day->format('Y-m-d')] ?? 0;
-        }
-
-        $labels[] = $periodStart->format('d M') . ' - ' . $periodEnd->format('d M');
-        $data[] = $total;
-
-        $current->addDays(3);
-    }
-
-/*
-|--------------------------------------------------------------------------
-| ≤ 30 Hari → Per Hari
-|--------------------------------------------------------------------------
-*/
-} else {
-
-    foreach (CarbonPeriod::create($start, $end) as $day) {
-        $labels[] = $day->format('d M');
-        $data[] = $results[$day->format('Y-m-d')] ?? 0;
-    }
-}
-        /*
-        |--------------------------------------------------------------------------
-        | EMA SMOOTHING (LANDai ala grafik emas)
-        |--------------------------------------------------------------------------
-        */
-
-        $periodEma = count($data) > 12 ? 6 : 4;
-        $multiplier = 2 / ($periodEma + 1);
-
-        $ema = [];
-        $ema[0] = $data[0] ?? 0;
-
-        foreach ($data as $i => $value) {
-            if ($i == 0) continue;
-            $ema[$i] = round((($value - $ema[$i - 1]) * $multiplier) + $ema[$i - 1], 2);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | AUTO TREND COLOR
-        |--------------------------------------------------------------------------
-        */
-
-        $first = $ema[0] ?? 0;
-        $last = end($ema) ?: 0;
-
-        $isUptrend = $last >= $first;
-
-        $lineColor = $isUptrend ? '#16a34a' : '#dc2626';
-        $bgColor = $isUptrend
-            ? 'rgba(22,163,74,0.15)'
-            : 'rgba(220,38,38,0.15)';
-
-        return [
-            'datasets' => [
-                [
-                    'label' => 'Trend FP',
-                    'data' => $ema,
-                    'borderColor' => $lineColor,
-                    'backgroundColor' => $bgColor,
-                    'fill' => true,
-                    'tension' => 0.65,
-                    'cubicInterpolationMode' => 'monotone',
-                    'pointRadius' => 0,
-                    'borderWidth' => 3,
-                ],
-            ],
-            'labels' => $labels,
-        ];
-    }
+                return [
+                    'datasets' => [
+                        [
+                            'label' => 'Trend FP',
+                            'data' => $data,
+                            'borderColor' => $lineColor,
+                            'backgroundColor' => $bgColor,
+                            'fill' => true,
+                            'tension' => 0.65,
+                            'cubicInterpolationMode' => 'monotone',
+                            'pointRadius' => 0,
+                            'borderWidth' => 3,
+                        ],
+                    ],
+                    'labels' => $labels,
+                ];
+            }
 
     protected function getType(): string
     {

@@ -12,16 +12,8 @@ class FpallStats extends BaseWidget
     protected static bool $isDiscovered = false;
     protected function getStats(): array
     {
-        // ======================
-        // Total FP Masuk (semua)
-        // ======================
-        $totalMasuk = Fp::count();
-
-        // ======================
-        // Ambil semua yang sudah keluar
-        // ======================
+        $totalAktif = Fp::where('status', 'aktif')->count();
         $keluarData = Fp::whereNotNull('tanggal_keluar')->get();
-
         $keluarNormal = 0;
         $keluarTidakNormal = 0;
 
@@ -29,7 +21,7 @@ class FpallStats extends BaseWidget
             $masaKerja = Carbon::parse($fp->tanggal_masuk)
                 ->diffInMonths(Carbon::parse($fp->tanggal_keluar));
 
-            if ($masaKerja < 3) {
+            if ($masaKerja < 2) {
                 // < 3 bulan
                 $keluarTidakNormal++;
             } else {
@@ -39,19 +31,19 @@ class FpallStats extends BaseWidget
         }
 
         return [
-            Stat::make('Total FP Masuk', $totalMasuk)
+            Stat::make('Total FP Aktif', $totalAktif)
                 ->description('aktif')
-                ->icon('heroicon-o-user-plus')
+                ->icon('heroicon-s-check-circle')
                 ->color('success'),
 
             Stat::make('Total Keluar Normal', $keluarNormal)
-                ->description('≥ 3 bulan')
-                ->icon('heroicon-o-check-circle')
+                ->description('≥ 2 bulan')
+                ->icon('heroicon-s-arrow-right-circle')
                 ->color('danger'),
 
             Stat::make('Total Keluar Tidak Normal', $keluarTidakNormal)
-                ->description('< 3 bulan')
-                ->icon('heroicon-o-x-circle')
+                ->description('< 2 bulan')
+                ->icon('heroicon-s-exclamation-circle')
                 ->color('primary'),
         ];
     }

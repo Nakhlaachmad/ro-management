@@ -3,31 +3,22 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use Spatie\Permission\Models\Role;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
-
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Users';
     protected static ?string $navigationGroup = null;
     protected static ?int $navigationSort = 2;
-
-
     public static function form(Form $form): Form
     {
         return $form
@@ -46,15 +37,28 @@ class UserResource extends Resource
                     ->password()
                     ->required(fn ($record) => $record === null)
                     ->dehydrated(fn ($state) => filled($state))
+                    ->minLength(8)
+                    ->rule('regex:/[a-z]/')
+                    ->rule('regex:/[A-Z]/')
+                    ->rule('regex:/[0-9]/')
+                    ->rule('regex:/[^A-Za-z0-9]/')
+                    ->helperText('Minimal 8 karakter, berisi huruf besar, huruf kecil, angka, dan simbol.')
                     ->maxLength(255),
 
-                Select::make('roles')
+                Select::make('role_display')
                     ->label('Role')
-                    ->relationship('roles', 'name')
-                    ->preload()
-                    ->searchable()
-                    ->required(),
+                    ->options(['ro' => 'RO'])
+                    ->default('ro')
+                    ->formatStateUsing(fn (): string => 'ro')
+                    ->disabled()
+                    ->dehydrated(false),
             ]);
+    }
+
+    /** @return Builder<\App\Models\User> */
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereHas('roles', fn (Builder $query) => $query->where('name', 'ro'));
     }
 
     public static function table(Table $table): Table
@@ -70,7 +74,6 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ]);
     }
 
@@ -111,7 +114,9 @@ class UserResource extends Resource
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        return $user?->hasRole('admin') ?? false;
+        return ($user?->hasRole('admin') ?? false)
+            && $record instanceof \App\Models\User
+            && $record->hasRole('ro');
     }
 
     public static function canDelete($record): bool

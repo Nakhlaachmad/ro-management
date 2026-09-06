@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 
 class Fp extends Model
 {
@@ -46,19 +48,57 @@ class Fp extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    /**
+     * Filter FP keluar berdasarkan batas dua bulan dari tanggal masuk.
+     *
+     * Aturan bisnisnya sama pada MariaDB dan PostgreSQL; hanya sintaks
+     * penambahan tanggal yang berbeda di kedua database.
+     */
+    public function scopeKeluarNormal(Builder $query): Builder
+    {
+        return $query
+            ->whereNotNull('tanggal_keluar')
+            ->whereNotNull('tanggal_masuk')
+            ->whereRaw('tanggal_keluar >= ' . $this->batasKeluarNormalSql($query));
+    }
+
+    public function scopeKeluarTidakNormal(Builder $query): Builder
+    {
+        return $query
+            ->whereNotNull('tanggal_keluar')
+            ->whereNotNull('tanggal_masuk')
+            ->whereRaw('tanggal_keluar < ' . $this->batasKeluarNormalSql($query));
+    }
+
+    private function batasKeluarNormalSql(Builder $query): string
+    {
+        return $query->getQuery()->getConnection()->getDriverName() === 'pgsql'
+            ? "tanggal_masuk + INTERVAL '2 months'"
+            : 'DATE_ADD(tanggal_masuk, INTERVAL 2 MONTH)';
+    }
+
     protected static function booted()
     {
+        static::creating(function ($fp) {
+            if ($fp->tanggal_masuk && Carbon::parse($fp->tanggal_masuk)->isWeekend()) {
+                throw ValidationException::withMessages([
+                    'tanggal_masuk' => 'Tanggal masuk tidak boleh hari Sabtu atau Minggu.',
+                ]);
+            }
+        });
+
         static::updating(function ($fp) {
 
-            // ✅ Jika status berubah ke nonaktif → isi tanggal keluar
+            if ($fp->isDirty('tanggal_masuk') && Carbon::parse($fp->tanggal_masuk)->isWeekend()) {
+                throw ValidationException::withMessages([
+                    'tanggal_masuk' => 'Tanggal masuk tidak boleh hari Sabtu atau Minggu.',
+                ]);
+            }
+
             if ($fp->isDirty('status') && $fp->status === 'nonaktif') {
                 $fp->tanggal_keluar = now();
             }
-
-            // ✅ Jika status balik ke aktif → hapus tanggal keluar
-            if ($fp->isDirty('status') && $fp->status === 'aktif') {
-                $fp->tanggal_keluar = null;
-            }
         });
     }
+    
 }
