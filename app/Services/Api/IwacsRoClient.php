@@ -12,7 +12,7 @@ use Throwable;
 final class IwacsRoClient
 {
     /** @param array<string, mixed> $profile
-     *  @return array<string, mixed>
+     * @return array<string, mixed>
      */
     public function createUser(array $profile, string $idempotencyKey): array
     {
@@ -20,7 +20,7 @@ final class IwacsRoClient
     }
 
     /** @param array<string, mixed> $changes
-     *  @return array<string, mixed>
+     * @return array<string, mixed>
      */
     public function updateUser(string $subject, int $expectedVersion, array $changes, string $sourceEmail): array
     {
@@ -38,7 +38,16 @@ final class IwacsRoClient
             'expected_version' => $expectedVersion,
             'source_email' => strtolower(trim($sourceEmail)),
             'password' => $password,
-        ], 'ro-password-'.Str::uuid(), 'IWACS menolak perubahan password RO.');
+        ], 'ro-password-'.Str::uuid(), 'IWACS menolak perubahan password RO.', true);
+    }
+
+    /** @return array<string, mixed> */
+    public function deleteUser(string $subject, int $expectedVersion, string $sourceEmail): array
+    {
+        return $this->request('DELETE', '/'.rawurlencode($subject), [
+            'expected_version' => $expectedVersion,
+            'source_email' => strtolower(trim($sourceEmail)),
+        ], 'ro-delete-'.Str::uuid(), 'IWACS menolak penghapusan akun RO.', true);
     }
 
     /** @return array<string, mixed> */
@@ -73,7 +82,7 @@ final class IwacsRoClient
     }
 
     /** @param array<string, mixed> $payload
-     *  @return array<string, mixed>
+     * @return array<string, mixed>
      */
     private function request(string $method, string $suffix, array $payload, string $idempotencyKey, string $fallback, bool $retryVersionConflict = false): array
     {

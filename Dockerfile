@@ -10,10 +10,18 @@ COPY resources ./resources
 COPY public ./public
 RUN npm run build
 
-FROM composer:2 AS vendor
+FROM composer:2 AS composer-bin
+
+FROM php:8.3-cli-bookworm AS vendor
 
 WORKDIR /app
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git libicu-dev libzip-dev unzip \
+    && docker-php-ext-install -j"$(nproc)" intl zip \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer-bin /usr/bin/composer /usr/local/bin/composer
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --no-scripts
 
@@ -25,8 +33,10 @@ FROM php:8.3-apache-bookworm
 WORKDIR /var/www/html
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl git libonig-dev libpq-dev libzip-dev unzip \
-    && docker-php-ext-install -j"$(nproc)" bcmath mbstring pdo_mysql pdo_pgsql zip \
+    && apt-get install -y --no-install-recommends curl git libicu-dev libonig-dev libpq-dev libzip-dev unzip \
+    && docker-php-ext-install -j"$(nproc)" bcmath intl mbstring pdo_mysql pdo_pgsql zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
     && a2enmod rewrite headers \
     && rm -rf /var/lib/apt/lists/*
 

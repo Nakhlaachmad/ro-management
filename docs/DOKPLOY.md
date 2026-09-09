@@ -4,10 +4,10 @@ Gunakan satu service aplikasi dari repository RO dan satu service PostgreSQL ter
 
 ## Konfigurasi aplikasi
 
-1. Buat aplikasi baru dari repository GitHub RO.
-2. Pilih build dari `Dockerfile` di root repository dan expose port `80`.
+1. Buat service **Docker Compose** baru dari repository GitHub RO.
+2. Gunakan path `./docker-compose.dokploy.yml`; domain Dokploy diarahkan ke service `web` port `80`.
 3. Masukkan nilai dari `.env.dokploy.example` sebagai environment variables. `APP_KEY` dibuat baru di lingkungan Dokploy.
-4. Atur health check ke `/up`.
+4. Health check `/up` sudah didefinisikan di Compose.
 5. Deploy aplikasi tanpa menjalankan migrasi otomatis di startup.
 
 ## Sinkronisasi identitas IWACS
@@ -45,13 +45,15 @@ akun RO lokal sebelum membuat session panel.
 ## Database dan cutover
 
 1. Buat service PostgreSQL terpisah dan database khusus RO.
-2. Jalankan `php artisan migrate --force` satu kali melalui terminal Dokploy.
+2. Jalankan `php artisan migrate --force` satu kali melalui terminal service `web` Dokploy.
 3. Ikuti `docs/POSTGRESQL_MIGRATION.md` untuk memindahkan data MariaDB aktif.
 4. Setelah verifikasi, hapus `LEGACY_MYSQL_*` dari Dokploy dan deploy ulang.
 
 ## Catatan operasional
 
 - Jangan menyimpan `.env`, dump SQL, password, atau private key di GitHub.
+- Volume bernama `ro_storage` menyimpan berkas aplikasi yang harus bertahan saat redeploy.
+- Aktifkan backup harian PostgreSQL dan `ro_storage` ke tujuan S3 melalui menu Backup Dokploy, lalu jalankan tombol **Test** sebelum cutover.
 - Jangan mengaktifkan lebih dari satu replika selama `SESSION_DRIVER=file` masih digunakan.
 - Saat pekerjaan antrean mulai dipakai, buat worker Dokploy terpisah dengan command `php artisan queue:work --tries=3 --timeout=90`; tidak perlu menjalankannya sekarang karena RO masih memakai antrean sinkron.
 - Scheduler, jika nanti dipakai, dijalankan sebagai service/cron terpisah dengan `php artisan schedule:work`.

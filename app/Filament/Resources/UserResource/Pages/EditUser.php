@@ -15,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 class EditUser extends EditRecord
 {
     protected static string $resource = UserResource::class;
+
     protected ?bool $hasDatabaseTransactions = true;
 
     protected function handleRecordUpdate(Model $record, array $data): Model
@@ -76,7 +77,9 @@ class EditUser extends EditRecord
                 $record->update(['profile_version' => $expectedVersion]);
             }
             if ($password !== '' && ! $createdFromLegacy) {
-                $client->updatePassword((string) $record->sso_subject, $expectedVersion, $password, (string) $record->email);
+                $result = $client->updatePassword((string) $record->sso_subject, $expectedVersion, $password, (string) $record->email);
+                $expectedVersion = (int) ($result['profile_version'] ?? $expectedVersion);
+                $record->update(['profile_version' => $expectedVersion]);
             }
         } catch (IwacsRoException $exception) {
             throw ValidationException::withMessages(['data.email' => $exception->getMessage()]);
@@ -88,12 +91,42 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->before(function (Actions\DeleteAction $action, User $record): void {
+                    if (blank($record->sso_subject)) {
+                        \Filament\Notifications\Notification::make()
+                            ->title('Penghapusan dibatalkan')
+                            ->body('Akun RO belum memiliki sso_subject dan tidak dapat dicocokkan secara aman dengan IWACS.')
+                            ->danger()
+                            ->persistent()
+                            ->send();
+                        $action->halt();
+
+                        return;
+                    }
+
+                    try {
+                        app(IwacsRoClient::class)->deleteUser(
+                            (string) $record->sso_subject,
+                            (int) ($record->profile_version ?? 1),
+                            (string) $record->email,
+                        );
+                    } catch (IwacsRoException $exception) {
+                        \Filament\Notifications\Notification::make()
+                            ->title('Penghapusan dibatalkan')
+                            ->body($exception->getMessage())
+                            ->danger()
+                            ->persistent()
+                            ->send();
+                        $action->halt();
+                    }
+                })
+                ->successNotificationTitle('Akun RO dihapus permanen dari RO dan IWACS'),
         ];
     }
-    protected function getRedirectUrl(): string
-{
-    return $this->getResource()::getUrl('index');
-}
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
