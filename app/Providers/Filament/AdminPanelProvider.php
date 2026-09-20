@@ -52,6 +52,7 @@ class AdminPanelProvider extends PanelProvider
                     ->sort(100),
             ])
             ->brandLogo(asset('images/3.png'))
+            ->favicon(asset('favicon.png').'?v=20260920b')
             ->darkModeBrandLogo(asset('images/4.png'))
             ->darkMode(true)
             ->brandLogoHeight('150px')
