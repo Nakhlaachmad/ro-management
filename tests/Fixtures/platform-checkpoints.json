@@ -1,0 +1,22 @@
+{
+  "recording_policy": "Append a new checkpoint only after its complete regression gates pass and evidence is reviewed. Neither verifier nor tests generate or update snapshots. Package versions are checkpoint evidence; observable behavior is the contract.",
+  "snapshots": {
+    "U1": {
+      "baseline_commit": "7a289b1e46e4cfb128778b3250f8ca9786e84529",
+      "evidence": {
+        "php_runtime": "8.3.30",
+        "full_suite": { "tests": 110, "assertions": 538, "result": "PASS" },
+        "isolation_smoke": { "tests": 4, "assertions": 11, "result": "PASS" },
+        "scope": "Accepted U0/U1 characterization baseline reproduced before U1.1; not an upgrade or deployment certification. composer.lock records package versions."
+      },
+      "files": {
+        "composer.json": "ceb0af30b98d9118a107d5b91d24d0e58d3aca92e9dafa4734686d6f2c616808",
+        "composer.lock": "f29fce517b0cde739efe4f332357744c9b54f1084e094151009bd783dfa0d100",
+        "package.json": "9430d7718d130bec355797175e2923b784d51122001e996355ed2e6f01cb3fac",
+        "package-lock.json": "73cd5dc928dbc12fd03f40a049f49efb5a3985e86f71e763f2450a924d2c24f9",
+        "Dockerfile": "3da0801c610683b8ac2ae09a8ef373e9c54d12fdc8f19a597cf1c95428da7abd",
+        "docker-compose.dokploy.yml": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30"
+      }
+    }
+  }
+}
