@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Filament\Widgets\FpallStats;
 use App\Models\Fp;
 use App\Models\Team;
-use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Support\IntegrationTestCase;
@@ -46,8 +45,8 @@ final class LegacyFpCharacterizationTest extends IntegrationTestCase
             return;
         }
         $this->assertSame($exit, $fp->fresh()->tanggal_keluar->toDateString());
-        $this->assertSame($months, Carbon::parse($entry)->diffInMonths(Carbon::parse($exit)));
-        $this->assertSame($signedMonths, Carbon::parse($entry)->diffInMonths(Carbon::parse($exit), false));
+        $this->assertSame($expectedStats[1], $widget->characterize()[1]->getValue());
+        $this->assertSame($expectedStats[2], $widget->characterize()[2]->getValue());
     }
 
     public function test_null_entry_date_is_rejected_by_existing_database_constraint(): void
@@ -133,8 +132,8 @@ final class LegacyFpCharacterizationTest extends IntegrationTestCase
         };
         $stats = $widget->characterize();
         $this->assertSame([1, 3, 1], array_map(fn ($stat) => $stat->getValue(), $stats));
-        $this->assertSame(2, Carbon::parse('2026-01-05')->diffInMonths(Carbon::parse('2026-03-05')));
-        $this->assertSame(59, Carbon::parse('2026-01-05')->diffInDays(Carbon::parse('2026-03-05')));
+        $this->assertSame(3, $stats[1]->getValue());
+        $this->assertSame(1, $stats[2]->getValue());
     }
 
     public function test_legacy_scopes_compile_two_month_sql_and_cannot_execute_on_sqlite(): void
