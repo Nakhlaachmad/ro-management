@@ -7,10 +7,55 @@ use App\Models\Fp;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Support\IntegrationTestCase;
 
 final class LegacyFpCharacterizationTest extends IntegrationTestCase
 {
+    public static function legacyDateCases(): array
+    {
+        return [
+            'reversed dates retain absolute classification' => ['2026-04-06', '2026-01-06', 3, -3, [0, 1, 0]],
+            'exact two months are normal despite 59 days' => ['2026-01-05', '2026-03-05', 2, 2, [0, 1, 0]],
+            'incomplete second month' => ['2026-01-05', '2026-03-04', 1, 1, [0, 0, 1]],
+            'year boundary' => ['2025-12-01', '2026-02-01', 2, 2, [0, 1, 0]],
+            'leap year month end' => ['2024-01-31', '2024-03-31', 2, 2, [0, 1, 0]],
+            'leap year incomplete month' => ['2024-01-31', '2024-03-01', 1, 1, [0, 0, 1]],
+            'leap day entry' => ['2024-02-29', '2024-04-29', 2, 2, [0, 1, 0]],
+            'future dates are accepted' => ['2030-01-07', '2030-04-07', 3, 3, [0, 1, 0]],
+            'null exit is excluded' => ['2026-01-05', null, null, null, [0, 0, 0]],
+        ];
+    }
+
+    #[DataProvider('legacyDateCases')]
+    public function test_legacy_date_boundaries(string $entry, ?string $exit, ?int $months, ?int $signedMonths, array $expectedStats): void
+    {
+        $fp = Fp::create($this->attributes(['tanggal_masuk' => $entry, 'tanggal_keluar' => $exit, 'status' => 'nonaktif']));
+        $widget = new class extends FpallStats
+        {
+            public function characterize(): array
+            {
+                return $this->getStats();
+            }
+        };
+        $this->assertSame($expectedStats, array_map(fn ($stat) => $stat->getValue(), $widget->characterize()));
+        $this->assertSame($entry, $fp->fresh()->tanggal_masuk->toDateString());
+        if ($exit === null) {
+            $this->assertNull($fp->fresh()->tanggal_keluar);
+
+            return;
+        }
+        $this->assertSame($exit, $fp->fresh()->tanggal_keluar->toDateString());
+        $this->assertSame($months, Carbon::parse($entry)->diffInMonths(Carbon::parse($exit)));
+        $this->assertSame($signedMonths, Carbon::parse($entry)->diffInMonths(Carbon::parse($exit), false));
+    }
+
+    public function test_null_entry_date_is_rejected_by_existing_database_constraint(): void
+    {
+        $this->expectException(\Illuminate\Database\QueryException::class);
+        Fp::create($this->attributes(['tanggal_masuk' => null]));
+    }
+
     private function attributes(array $override = []): array
     {
         return array_merge([
