@@ -26,7 +26,7 @@ class FpperiodeStats extends BaseWidget
 
         foreach ($keluarData as $fp) {
             $masaKerja = Carbon::parse($fp->tanggal_masuk)
-                ->diffInMonths(Carbon::parse($fp->tanggal_keluar));
+                ->diffInMonths(Carbon::parse($fp->tanggal_keluar), true);
 
             if ($masaKerja < 2) {
                 $keluarTidakNormal++;

@@ -22,7 +22,7 @@ class FpChart extends ChartWidget
         $start = Carbon::parse($startDate)->startOfDay();
         $end = Carbon::parse($endDate)->endOfDay();
 
-        $days = $start->diffInDays($end);
+        $days = $start->diff($end, true)->days;
 
         $results = Fp::whereBetween('tanggal_masuk', [$start, $end])
             ->selectRaw('DATE(tanggal_masuk) as tanggal, COUNT(*) as total')
@@ -31,7 +31,7 @@ class FpChart extends ChartWidget
 
         $labels = [];
         $data = [];
-        $days = $start->diffInDays($end);
+        $days = $start->diff($end, true)->days;
         $labels = [];
         $data = [];
 
