@@ -19,9 +19,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # Characterization baseline matches the existing Docker PHP series.
-        # The current lockfile already contains packages requiring PHP >=8.2.
-        php: [8.3]
+        # Validate the approved runtime used by both Docker PHP stages.
+        php: [8.4]
 
     name: PHP ${{ matrix.php }}
 
@@ -39,7 +38,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
 
-      - name: Verify frozen U0 source and installed lockfile
+      - name: Verify immutable integration and current lockfile consistency
         run: php tests/Support/verify-baseline.php
 
       - name: Prove isolation before database-writing tests

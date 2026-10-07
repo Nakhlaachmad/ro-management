@@ -12,7 +12,7 @@ RUN npm run build
 
 FROM composer:2 AS composer-bin
 
-FROM php:8.3-cli-bookworm AS vendor
+FROM php:8.4-cli-bookworm AS vendor
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN composer install --no-dev --no-interaction --no-progress --prefer-dist --no-
 COPY . ./
 RUN composer dump-autoload --no-dev --optimize --no-interaction
 
-FROM php:8.3-apache-bookworm
+FROM php:8.4-apache-bookworm
 
 WORKDIR /var/www/html
 
