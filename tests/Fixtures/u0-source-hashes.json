@@ -1,0 +1,22 @@
+{
+  "composer.json": "ceb0af30b98d9118a107d5b91d24d0e58d3aca92e9dafa4734686d6f2c616808",
+  "composer.lock": "f29fce517b0cde739efe4f332357744c9b54f1084e094151009bd783dfa0d100",
+  "package.json": "9430d7718d130bec355797175e2923b784d51122001e996355ed2e6f01cb3fac",
+  "package-lock.json": "73cd5dc928dbc12fd03f40a049f49efb5a3985e86f71e763f2450a924d2c24f9",
+  "Dockerfile": "3da0801c610683b8ac2ae09a8ef373e9c54d12fdc8f19a597cf1c95428da7abd",
+  "docker-compose.dokploy.yml": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30",
+  "app/Http/Controllers/JwtSsoController.php": "3f5a879c788519701569fb746e90fce95c56420dc8b3b9e9d67e55666194978d",
+  "app/Http/Controllers/GlobalLogoutController.php": "e3abbb1b7e834069663ba3ee7cea5d3bc9c9253cf4e838ba2b0d8e6c95f1f7cd",
+  "app/Http/Controllers/Api/UserSyncController.php": "bc0ff057501b6d6b4f401580af1e0a1882e5bbde536c1657d0ff8c6e674e55f1",
+  "app/Services/Api/IwacsRoClient.php": "09dc97a615a7c6d4b248d5eb3b6216836055ed4835cc0c1f5451291dc063e986",
+  "app/Services/Api/KeycloakAccessTokenValidator.php": "f831b4ebef9b064510e639d7f563d42e973d54c7366ab4602fdd046b8291dda1",
+  "app/Http/Responses/RoLogoutResponse.php": "ab65a569b05e354e9aab5a829daa640744038ed65e6457827eb962b56b0b0483",
+  "config/api.php": "5fe14861468eb8bfbdb09b54920fcd7e8f8114181033da67c046fad501d207c4",
+  "config/services.php": "a694f82e09615491ec17ec0889dfa41b9d6a9cc1c9daff40a655e5c7662fcaca",
+  "routes/web.php": "d6454fd1c74aeb106a1aad56ed1737882569b28d7b51c965aa710d97422dd861",
+  "routes/api.php": "f72fcc89fed4eef6665a79ca13cd40f719025c353019213a9f6a80bf6b09ce0e",
+  "scripts/configure-local-iwacs-ro-sync.ps1": "cb22101344caeae41a066db596d656e24c6ff12d1083d41d2c219b25872e899d",
+  "database/migrations/2026_09_03_233000_add_iwacs_sync_fields_to_users_table.php": "ca3220f8d0f62600b3fa8a5912839e4154f92077476290aff146852343e24112",
+  "app/Services/Sso/JtiReplayGuard.php": "66a89f9422166d291c8c9331c56328ec21043ba29781ba271261a77061f31952",
+  "app/Services/Sso/JwtSsoValidator.php": "192038af74ef58bd3d68777cd444f9b7ad6969eb5b61112be9277f72b5622f4e"
+}

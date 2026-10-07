@@ -1,0 +1,5 @@
+# These PEMs are generated synthetic fixtures, intentionally safe to version.
+!rsa-private.pem
+!rsa-public.pem
+!rsa-other-private.pem
+!rsa-other-public.pem
