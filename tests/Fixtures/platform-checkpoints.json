@@ -17,6 +17,103 @@
         "Dockerfile": "3da0801c610683b8ac2ae09a8ef373e9c54d12fdc8f19a597cf1c95428da7abd",
         "docker-compose.dokploy.yml": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30"
       }
+    },
+    "U4": {
+        "status": "LOCAL_VALIDATION_PASS_PROPOSED_FOR_REVIEW",
+        "source_checkpoint": "ea826129322ff8384ea14abc9a514ede1e11957b",
+        "date_characterization": "565c9330c4b2b344972ad98a3c4f2dfcd9f86875",
+        "observable_behavior_characterization": "37a4a5ae957009d8c4ae525d33ac3b1a87269d54",
+        "carbon_compatibility": "69e788b600f80cd8b44cba683de268c04e1b5237",
+        "platform_commit": "4970efcef0f25c227e068faeb1b0785e784ca43b",
+        "checkpoint_commit_reference": "The Git commit adding snapshots.U4 in this file; its exact SHA is reported in the U4.3 final report. No self-referential commit hash is stored.",
+        "evidence": {
+            "validation_date": "2026-10-08",
+            "php_runtime": "8.4.26",
+            "package_versions": {
+                "laravel/framework": "v12.69.3",
+                "nesbot/carbon": "3.14.2",
+                "laravel/sanctum": "v4.3.3",
+                "filament/filament": "v3.3.56",
+                "livewire/livewire": "v3.8.10",
+                "firebase/php-jwt": "v7.1.0",
+                "phpunit/phpunit": "11.5.57",
+                "nunomaduro/collision": "v8.9.5",
+                "spatie/laravel-permission": "6.24.1",
+                "laravel/tinker": "v2.11.0",
+                "laravel/sail": "v1.52.0",
+                "spatie/laravel-ignition": "2.9.1"
+            },
+            "full_suite": {
+                "tests": 145,
+                "assertions": 697,
+                "result": "PASS",
+                "seconds": 47.814
+            },
+            "date_widget_suite": {
+                "tests": 42,
+                "assertions": 177,
+                "result": "PASS",
+                "seconds": 5.413
+            },
+            "isolation_smoke": {
+                "tests": 4,
+                "assertions": 11,
+                "result": "PASS"
+            },
+            "phpunit_metadata_deprecations": 4,
+            "immutable_integration": {
+                "hashes": 14,
+                "result": "PASS",
+                "original_fixture_unchanged": true
+            },
+            "composer_validate": "PASS",
+            "platform_requirements": "PASS",
+            "installed_lock_consistency": "PASS",
+            "composer_audit": {
+                "result": "PASS",
+                "advisories": 0,
+                "abandoned": 0,
+                "locked": true,
+                "no_plugins": true
+            },
+            "pint": {
+                "new_violations": 0,
+                "changed_line_regression": "PASS",
+                "whole_file": "FAIL_PRE_EXISTING_LEGACY_VIOLATIONS",
+                "method": "U1.1 Git blob and current bytes normalized only for line endings in scratch copies; same rule sets and formatter delta commutes with all five approved expression changes; repository PHP/config unchanged."
+            },
+            "php_syntax": "PASS",
+            "git_diff_check": "PASS",
+            "application_smoke": {
+                "result": "PASS",
+                "commands": [
+                    "package:discover",
+                    "route:list",
+                    "config:cache",
+                    "route:cache"
+                ],
+                "panel_boot": "PASS",
+                "login_http_status": 200,
+                "scope": "Isolated current-source mirror under PHP 8.4.26; prior U4.2 evidence verified against unchanged source/dependency state in U4.3."
+            },
+            "frontend_build": {
+                "result": "PASS",
+                "vite": "5.4.21",
+                "scope": "Existing production build to scratch outDir; unchanged frontend source/config/manifests verified in U4.3."
+            },
+            "docker": "NOT VERIFIED",
+            "staging": "NOT VERIFIED",
+            "scope": "Local Laravel 12 platform checkpoint proposed for review, not deployment/staging certification; no Laravel 13 work."
+        },
+        "files": {
+            "composer.json": "1c2c82425e65b8791f6a6ec783a35ce512ee9aaf30c2dcc45aa7cf9dd799208c",
+            "composer.lock": "9b8b346bcdeea8d7cedca597f5969f943425e8610777e1a3daa3efb0c68fd151",
+            "package.json": "9430d7718d130bec355797175e2923b784d51122001e996355ed2e6f01cb3fac",
+            "package-lock.json": "73cd5dc928dbc12fd03f40a049f49efb5a3985e86f71e763f2450a924d2c24f9",
+            "Dockerfile": "1247cade64bd1818713ae8386f498d81f1850c1a81b72e78c80231269a6a516a",
+            "docker-compose.dokploy.yml": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30",
+            ".github/workflows/tests.yml": "631d6fc044b5632fbd7d2e4e4ad23634faf09cf37c4b5ffd7ac560ba7cc702ea"
+        }
     }
   }
 }
