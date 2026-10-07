@@ -14,4 +14,12 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
     ];
+
+    /**
+     * Preserve legacy token enforcement for state-changing requests.
+     */
+    protected function hasValidOrigin($request): bool
+    {
+        return false;
+    }
 }
