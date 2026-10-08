@@ -114,6 +114,165 @@
             "docker-compose.dokploy.yml": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30",
             ".github/workflows/tests.yml": "631d6fc044b5632fbd7d2e4e4ad23634faf09cf37c4b5ffd7ac560ba7cc702ea"
         }
+    },
+    "U5": {
+        "status": "LOCAL_VALIDATION_PASS_ACCEPTED",
+        "scope": "Accepted local Laravel 13 application compatibility checkpoint; NOT deployment certification.",
+        "accepted_rollback_checkpoint": "4e34824a4bb24d913a882c303016720974f762ee",
+        "implementation_head": "b8ee7326c916c477f232262306f1b3ac18c609f3",
+        "implementation_lineage": {
+            "csrf_characterization": "bd7fc4db494a9c0e89dfae47d199af51c544c105",
+            "platform_upgrade": "1dcb4d5a83a492ac9002466826ee738dc60b9dd2",
+            "csrf_compatibility": "b8ee7326c916c477f232262306f1b3ac18c609f3"
+        },
+        "checkpoint_commit_reference": "The evidence-only Git commit appending snapshots.U5; its SHA is reported separately in the U5.2 final report. No self-referential SHA is stored.",
+        "evidence": {
+            "validation_date": "2026-10-08",
+            "php_runtime": "8.4.26",
+            "package_versions": {
+                "anourvalar/eloquent-serialize": "1.3.12",
+                "barryvdh/laravel-ide-helper": "v3.7.0",
+                "brick/math": "0.14.8",
+                "filament/actions": "v3.3.56",
+                "filament/filament": "v3.3.56",
+                "filament/forms": "v3.3.56",
+                "filament/infolists": "v3.3.56",
+                "filament/notifications": "v3.3.56",
+                "filament/support": "v3.3.56",
+                "filament/tables": "v3.3.56",
+                "filament/widgets": "v3.3.56",
+                "firebase/php-jwt": "v7.1.0",
+                "laravel/framework": "v13.35.0",
+                "laravel/sail": "v1.53.0",
+                "laravel/sanctum": "v4.3.3",
+                "laravel/serializable-closure": "v2.1.0",
+                "laravel/tinker": "v3.0.2",
+                "livewire/livewire": "v3.8.10",
+                "nesbot/carbon": "3.14.2",
+                "nunomaduro/collision": "v8.9.5",
+                "phpunit/phpunit": "11.5.57",
+                "spatie/laravel-ignition": "2.11.0",
+                "spatie/laravel-permission": "6.25.0"
+            },
+            "locked_packages": {
+                "total": 149,
+                "production": 106,
+                "dev": 43
+            },
+            "original_regression": {
+                "tests": 145,
+                "assertions": 697,
+                "result": "PASS"
+            },
+            "date_widget_suite": {
+                "tests": 42,
+                "assertions": 177,
+                "result": "PASS"
+            },
+            "isolation_smoke": {
+                "tests": 4,
+                "assertions": 11,
+                "result": "PASS"
+            },
+            "csrf_suite": {
+                "tests": 13,
+                "assertions": 47,
+                "result": "PASS"
+            },
+            "combined_suite": {
+                "tests": 158,
+                "assertions": 744,
+                "result": "PASS"
+            },
+            "phpunit_metadata_deprecations": 4,
+            "immutable_integration": {
+                "hashes": 14,
+                "result": "PASS",
+                "original_fixture_unchanged": true
+            },
+            "approved_source_diff": "PASS: two production CSRF files, two Composer manifests and one new characterization file; byte-identical to reviewed implementation.",
+            "admin_panel_provider": "PASS: approved CSRF import/wiring only; other content unchanged.",
+            "composer_validate": "PASS",
+            "platform_requirements": "PASS",
+            "installed_lock_consistency": "PASS",
+            "composer_audit": {
+                "result": "PASS",
+                "advisories": 0,
+                "abandoned": 0,
+                "locked": true,
+                "no_plugins": true,
+                "security_policy_active": true,
+                "fresh_metadata": true
+            },
+            "csrf_contract": {
+                "valid_token_post": "ACCEPTED",
+                "missing_token_post": "REJECTED",
+                "invalid_token_post": "REJECTED",
+                "same_origin_missing_token": "REJECTED",
+                "same_origin_invalid_token": "REJECTED",
+                "same_origin_valid_token": "ACCEPTED",
+                "get": "ACCEPTED",
+                "explicit_exemptions": []
+            },
+            "csrf_runtime": {
+                "result": "PASS",
+                "cases": 17,
+                "scope": "Fresh isolated HTTP runtime, APP_ENV local/testing bypass false; web/panel middleware probes and actual login Livewire validation POST. Authenticated success/mutation/logout and full browser remain staging-required."
+            },
+            "application_smoke": {
+                "result": "PASS",
+                "commands": [
+                    "package:discover",
+                    "route:list",
+                    "config:cache",
+                    "route:cache",
+                    "route:clear",
+                    "config:clear",
+                    "cache:clear"
+                ],
+                "panel_boot": "PASS",
+                "login_http_status": 200,
+                "tinker_registration": "PASS",
+                "scope": "Fresh execution on byte-identical isolated source mirror, synthetic settings and no live integration access."
+            },
+            "frontend_build": {
+                "result": "PASS",
+                "rerun": true,
+                "vite": "5.4.21",
+                "node": "24.18.0",
+                "dependency_changes": "NONE"
+            },
+            "pint": {
+                "new_violations": 0,
+                "changed_line_regression": "PASS",
+                "whole_file_provider": "FAIL_PRE_EXISTING_LEGACY_VIOLATIONS",
+                "method": "Fresh baseline/current scratch formatting comparison: same legacy rule set and formatted import projection equality; production/test files not reformatted."
+            },
+            "php_syntax": "PASS",
+            "git_diff_check": "PASS",
+            "migration_schema_changes": "NONE",
+            "known_legacy_bug_fixes": "NONE",
+            "environment_limitations": {
+                "docker": "NOT VERIFIED",
+                "staging": "NOT VERIFIED",
+                "real_redis": "NOT VERIFIED",
+                "real_production_db": "NOT VERIFIED",
+                "live_sso_iwacs": "NOT VERIFIED",
+                "old_queued_serializable_closure_payload_compatibility": "NOT VERIFIED",
+                "authenticated_http_login_actions_logout": "NOT VERIFIED",
+                "full_browser_proxy_https_cookies": "NOT VERIFIED"
+            },
+            "deployment_performed": false
+        },
+        "files": {
+            "composer.json": "49cf867ed70d3746f4a51654951432ca14573946408e6fafea6bfdf2b7942126",
+            "composer.lock": "d2d1678b803591aa4681e25c2f25d4f3a9995a140768ad8c52db72d6b6814d93",
+            "package.json": "9430d7718d130bec355797175e2923b784d51122001e996355ed2e6f01cb3fac",
+            "package-lock.json": "73cd5dc928dbc12fd03f40a049f49efb5a3985e86f71e763f2450a924d2c24f9",
+            "Dockerfile": "1247cade64bd1818713ae8386f498d81f1850c1a81b72e78c80231269a6a516a",
+            "docker-compose.dokploy.yml": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30",
+            ".github/workflows/tests.yml": "631d6fc044b5632fbd7d2e4e4ad23634faf09cf37c4b5ffd7ac560ba7cc702ea"
+        }
     }
   }
 }
