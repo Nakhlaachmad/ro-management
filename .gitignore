@@ -21,6 +21,8 @@ yarn-error.log
 *.pem
 *.sql
 *.sql.gz
+!database/sql/
+!database/sql/*.sql
 /storage/app/keys/*
 !/storage/app/keys/.gitkeep
 /.fleet

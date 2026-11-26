@@ -16,4 +16,6 @@ storage/framework/views/*
 tests
 README.md
 *.sql
+!database/sql
+!database/sql/*.sql
 *.zip
