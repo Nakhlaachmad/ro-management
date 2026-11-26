@@ -98,7 +98,7 @@ final class DomainMetadataTest extends TestCase
     public function test_activation_remains_disabled_and_evidence_models_are_now_available(): void
     {
         $root = dirname(__DIR__, 2);
-        foreach ([['testing', false, false], ['production', true, false], ['local', true, true]] as [$environment, $optIn, $enabled]) {
+        foreach ([['testing', false, false], ['production', true, true], ['local', true, true]] as [$environment, $optIn, $enabled]) {
             $code = 'require '.var_export($root.'/vendor/autoload.php', true).';'
                 .'foreach (["APP_ENV","FP_ENABLED","FP_USER_MANAGEMENT_ENABLED","FP_ANNUAL_NIP_EMAIL_ENABLED","FP_USER_ROLES_ENABLED","FP_RECRUITMENT_TEAM_ENABLED","FP_ORGANIZATION_ENABLED"] as $key) { putenv($key); unset($_ENV[$key],$_SERVER[$key]); }'
                 .'putenv("APP_ENV='.$environment.'");putenv("FP_ENABLED='.($optIn ? 'true' : 'false').'");'

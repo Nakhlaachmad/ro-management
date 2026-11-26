@@ -11,8 +11,8 @@ final class FpDevelopmentPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        if (! $this->app->environment('local') || ! \App\Application\FP\FeatureAccess::enabled()) {
-            throw new \LogicException('FP development panel is local-only');
+        if (! \App\Application\FP\FeatureAccess::enabled()) {
+            throw new \LogicException('FP panel requires FP_ENABLED');
         }
 
         return $panel->id('fp-dev')->path('fp-dev')->login(\App\Filament\FP\Login::class)->authGuard('web')

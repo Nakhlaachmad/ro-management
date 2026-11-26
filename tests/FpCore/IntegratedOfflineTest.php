@@ -155,7 +155,7 @@ final class IntegratedOfflineTest extends TestCase
         self::assertStringContainsString('FpReportAuthenticate::class', $routes);
         self::assertTrue(is_subclass_of(\App\Http\Middleware\FpReportAuthenticate::class, \Illuminate\Auth\Middleware\Authenticate::class));
         self::assertStringContainsString('FpEnabled::class', $routes);
-        self::assertStringContainsString("env('APP_ENV') === 'local' && env('FP_ENABLED', false)", file_get_contents($root.'/config/fp.php'));
+        self::assertStringContainsString('$fpEnabled = env(\'FP_ENABLED\', false);', file_get_contents($root.'/config/fp.php'));
         $job = file_get_contents($root.'/app/Jobs/FP/DeleteRejectedDocuments.php');
         self::assertStringContainsString('afterCommit()', $job);
         self::assertStringContainsString('DOCUMENT_CHANGED', file_get_contents($root.'/app/Application/FP/FpEngine.php'));
