@@ -1,0 +1,21 @@
+{
+    "source": {
+        "db": "fp_f37g_phase3_20261021",
+        "schema": "public",
+        "host": "127.0.0.1",
+        "port": 55432,
+        "cluster": "7694154787604477244"
+    },
+    "target": {
+        "db": "fp_f39_stage68_20261118",
+        "schema": "public",
+        "host": "127.0.0.1",
+        "port": 55432,
+        "cluster": "7694154787604477244"
+    },
+    "synthetic_provenance": "Synthetic-only cluster manifest; no legacy imports; dedicated restore of existing acceptance fixtures",
+    "backup_sha256": "6dd47daf2832072b2441077210619c5ecfeb0a97c23cde8e2e4c58c63ff0c69e",
+    "backup_bytes": 293051,
+    "table_count": 33,
+    "restore_fingerprints_match": true
+}

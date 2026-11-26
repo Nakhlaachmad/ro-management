@@ -10,6 +10,13 @@ if (! is_dir($runtime) && ! mkdir($runtime, 0700, true) && ! is_dir($runtime)) {
     throw new RuntimeException('Cannot create isolated test runtime.');
 }
 
+// Laravel loads a .env from the isolated path. An empty file prevents phpdotenv
+// warnings without ever reading the repository's local credentials.
+$envFile = $runtime.'/.env';
+if (! is_file($envFile) && file_put_contents($envFile, '', LOCK_EX) === false) {
+    throw new RuntimeException('Cannot create isolated test environment file.');
+}
+
 $environment = [
     'APP_ENV' => 'testing',
     'APP_KEY' => 'base64:'.base64_encode(str_repeat('t', 32)),

@@ -1,0 +1,50 @@
+[
+  {
+    "File": "app/Http/Controllers/GlobalLogoutController.php",
+    "Unchanged": true
+  },
+  {
+    "File": "app/Http/Controllers/JwtSsoController.php",
+    "Unchanged": true
+  },
+  {
+    "File": "app/Http/Controllers/FP/DocumentController.php",
+    "Unchanged": true
+  },
+  {
+    "File": "app/Infrastructure/FP/Uploads.php",
+    "Unchanged": true
+  },
+  {
+    "File": "app/Http/Responses/RoLogoutResponse.php",
+    "Unchanged": true
+  },
+  {
+    "File": "config/services.php",
+    "Unchanged": true
+  },
+  {
+    "File": ".env",
+    "Unchanged": true
+  },
+  {
+    "File": "routes/web.php",
+    "Unchanged": true
+  },
+  {
+    "File": "app/Http/Controllers/Api/UserSyncController.php",
+    "Unchanged": true
+  },
+  {
+    "File": "app/Application/FP/AmendFpDocument.php",
+    "Unchanged": true
+  },
+  {
+    "File": "config/api.php",
+    "Unchanged": true
+  },
+  {
+    "File": "routes/api.php",
+    "Unchanged": true
+  }
+]

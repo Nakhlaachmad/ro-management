@@ -1,0 +1,243 @@
+{
+  "ProtectedBaseline": [
+    {
+      "File": "app/Http/Controllers/JwtSsoController.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Http/Controllers/GlobalLogoutController.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Http/Controllers/Api/UserSyncController.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Services/Api/IwacsRoClient.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Services/Api/KeycloakAccessTokenValidator.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Http/Responses/RoLogoutResponse.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "config/api.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "config/services.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "routes/web.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "routes/api.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "scripts/configure-local-iwacs-ro-sync.ps1",
+      "BaselineMatch": true
+    },
+    {
+      "File": "database/migrations/2026_09_03_233000_add_iwacs_sync_fields_to_users_table.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Services/Sso/JtiReplayGuard.php",
+      "BaselineMatch": true
+    },
+    {
+      "File": "app/Services/Sso/JwtSsoValidator.php",
+      "BaselineMatch": true
+    }
+  ],
+  "Comparisons": [
+    {
+      "File": "app/Http/Controllers/Api/UserSyncController.php",
+      "BeforeSha256": "bc0ff057501b6d6b4f401580af1e0a1882e5bbde536c1657d0ff8c6e674e55f1",
+      "AfterSha256": "bc0ff057501b6d6b4f401580af1e0a1882e5bbde536c1657d0ff8c6e674e55f1",
+      "Unchanged": true
+    },
+    {
+      "File": "routes/web.php",
+      "BeforeSha256": "d6454fd1c74aeb106a1aad56ed1737882569b28d7b51c965aa710d97422dd861",
+      "AfterSha256": "d6454fd1c74aeb106a1aad56ed1737882569b28d7b51c965aa710d97422dd861",
+      "Unchanged": true
+    },
+    {
+      "File": "config/nextcloud.php",
+      "BeforeSha256": "57896dd0067ea40d66d5e33a9337f61753c0113d610d04390f1d23f4ccb07564",
+      "AfterSha256": "57896dd0067ea40d66d5e33a9337f61753c0113d610d04390f1d23f4ccb07564",
+      "Unchanged": true
+    },
+    {
+      "File": "database/migrations/2026_09_03_233000_add_iwacs_sync_fields_to_users_table.php",
+      "BeforeSha256": "ca3220f8d0f62600b3fa8a5912839e4154f92077476290aff146852343e24112",
+      "AfterSha256": "ca3220f8d0f62600b3fa8a5912839e4154f92077476290aff146852343e24112",
+      "Unchanged": true
+    },
+    {
+      "File": "config/fp.php",
+      "BeforeSha256": "7c120008f15938157a6e347c0fc55974d1a133e7ae40627b32c8f734db7d2fa2",
+      "AfterSha256": "7c120008f15938157a6e347c0fc55974d1a133e7ae40627b32c8f734db7d2fa2",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Services/Sso/JtiReplayGuard.php",
+      "BeforeSha256": "66a89f9422166d291c8c9331c56328ec21043ba29781ba271261a77061f31952",
+      "AfterSha256": "66a89f9422166d291c8c9331c56328ec21043ba29781ba271261a77061f31952",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Models/User.php",
+      "BeforeSha256": "67b483a81a2d4d7ec48fa131a54bb072ea3e2a8f08fc9e741db0f930b47c6d84",
+      "AfterSha256": "67b483a81a2d4d7ec48fa131a54bb072ea3e2a8f08fc9e741db0f930b47c6d84",
+      "Unchanged": true
+    },
+    {
+      "File": "config/auth.php",
+      "BeforeSha256": "a12205af895da53dd472f0a55a2e4a51adc979c616cf9d9c09cb7ae9b8bdabf9",
+      "AfterSha256": "a12205af895da53dd472f0a55a2e4a51adc979c616cf9d9c09cb7ae9b8bdabf9",
+      "Unchanged": true
+    },
+    {
+      "File": "config/api.php",
+      "BeforeSha256": "5fe14861468eb8bfbdb09b54920fcd7e8f8114181033da67c046fad501d207c4",
+      "AfterSha256": "5fe14861468eb8bfbdb09b54920fcd7e8f8114181033da67c046fad501d207c4",
+      "Unchanged": true
+    },
+    {
+      "File": "config/services.php",
+      "BeforeSha256": "a694f82e09615491ec17ec0889dfa41b9d6a9cc1c9daff40a655e5c7662fcaca",
+      "AfterSha256": "a694f82e09615491ec17ec0889dfa41b9d6a9cc1c9daff40a655e5c7662fcaca",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Services/Sso/JwtSsoValidator.php",
+      "BeforeSha256": "192038af74ef58bd3d68777cd444f9b7ad6969eb5b61112be9277f72b5622f4e",
+      "AfterSha256": "192038af74ef58bd3d68777cd444f9b7ad6969eb5b61112be9277f72b5622f4e",
+      "Unchanged": true
+    },
+    {
+      "File": "scripts/configure-local-iwacs-ro-sync.ps1",
+      "BeforeSha256": "cb22101344caeae41a066db596d656e24c6ff12d1083d41d2c219b25872e899d",
+      "AfterSha256": "cb22101344caeae41a066db596d656e24c6ff12d1083d41d2c219b25872e899d",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Http/Controllers/GlobalLogoutController.php",
+      "BeforeSha256": "e3abbb1b7e834069663ba3ee7cea5d3bc9c9253cf4e838ba2b0d8e6c95f1f7cd",
+      "AfterSha256": "e3abbb1b7e834069663ba3ee7cea5d3bc9c9253cf4e838ba2b0d8e6c95f1f7cd",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Http/Controllers/FP/DocumentController.php",
+      "BeforeSha256": "4b3010086aebf277de7bd6fc057f66848dcaa0afccacf8ff3c1454b39c4a066b",
+      "AfterSha256": "4b3010086aebf277de7bd6fc057f66848dcaa0afccacf8ff3c1454b39c4a066b",
+      "Unchanged": true
+    },
+    {
+      "File": ".env",
+      "BeforeSha256": "1c8a6fed0ae3de91c64b7c6889d3e9beed38d26d3955de5ca2bec9042bfc631b",
+      "AfterSha256": "1c8a6fed0ae3de91c64b7c6889d3e9beed38d26d3955de5ca2bec9042bfc631b",
+      "Unchanged": true
+    },
+    {
+      "File": ".env.dokploy.example",
+      "BeforeSha256": "138b6b8eb58840b048d69c0c124a2dea6b91636dda140a6cf6557355923b7521",
+      "AfterSha256": "138b6b8eb58840b048d69c0c124a2dea6b91636dda140a6cf6557355923b7521",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Infrastructure/FP/Uploads.php",
+      "BeforeSha256": "910f583e662bff0d13bc8cc13f509871ca27840d9ec8739490ef669b2d370ada",
+      "AfterSha256": "910f583e662bff0d13bc8cc13f509871ca27840d9ec8739490ef669b2d370ada",
+      "Unchanged": true
+    },
+    {
+      "File": "docker-compose.dokploy.yml",
+      "BeforeSha256": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30",
+      "AfterSha256": "13a54ca46d304ede507104c6bf9c6059196c8d88408a034d1b8514548c4b9c30",
+      "Unchanged": true
+    },
+    {
+      "File": "database/seeders/RolePermissionSeeder.php",
+      "BeforeSha256": "da2ac688b2218e37c98442a5d16ac12ac035d47514cc82a64f4388e61034d087",
+      "AfterSha256": "da2ac688b2218e37c98442a5d16ac12ac035d47514cc82a64f4388e61034d087",
+      "Unchanged": true
+    },
+    {
+      "File": "config/sanctum.php",
+      "BeforeSha256": "b4c1c5ca7d2bf7d40bade82b7fc18cdff3f13d6cf5319fd521ddd2ddea2d19de",
+      "AfterSha256": "b4c1c5ca7d2bf7d40bade82b7fc18cdff3f13d6cf5319fd521ddd2ddea2d19de",
+      "Unchanged": true
+    },
+    {
+      "File": "Dockerfile",
+      "BeforeSha256": "1247cade64bd1818713ae8386f498d81f1850c1a81b72e78c80231269a6a516a",
+      "AfterSha256": "1247cade64bd1818713ae8386f498d81f1850c1a81b72e78c80231269a6a516a",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Http/Responses/RoLogoutResponse.php",
+      "BeforeSha256": "ab65a569b05e354e9aab5a829daa640744038ed65e6457827eb962b56b0b0483",
+      "AfterSha256": "ab65a569b05e354e9aab5a829daa640744038ed65e6457827eb962b56b0b0483",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Services/Api/KeycloakAccessTokenValidator.php",
+      "BeforeSha256": "f831b4ebef9b064510e639d7f563d42e973d54c7366ab4602fdd046b8291dda1",
+      "AfterSha256": "f831b4ebef9b064510e639d7f563d42e973d54c7366ab4602fdd046b8291dda1",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Services/Api/IwacsRoClient.php",
+      "BeforeSha256": "09dc97a615a7c6d4b248d5eb3b6216836055ed4835cc0c1f5451291dc063e986",
+      "AfterSha256": "09dc97a615a7c6d4b248d5eb3b6216836055ed4835cc0c1f5451291dc063e986",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Application/FP/AmendFpDocument.php",
+      "BeforeSha256": "8be6cf91944d27cd7dd919aee01d7a7e1afd7dbf6f40e0948b62f5253261c174",
+      "AfterSha256": "8be6cf91944d27cd7dd919aee01d7a7e1afd7dbf6f40e0948b62f5253261c174",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Http/Controllers/JwtSsoController.php",
+      "BeforeSha256": "3f5a879c788519701569fb746e90fce95c56420dc8b3b9e9d67e55666194978d",
+      "AfterSha256": "3f5a879c788519701569fb746e90fce95c56420dc8b3b9e9d67e55666194978d",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Providers/Filament/AdminPanelProvider.php",
+      "BeforeSha256": "f26b3303d9f4cff84f0a533bdbbe87c33cac94e027fdc28e1dc937069bcf8e4a",
+      "AfterSha256": "f26b3303d9f4cff84f0a533bdbbe87c33cac94e027fdc28e1dc937069bcf8e4a",
+      "Unchanged": true
+    },
+    {
+      "File": "app/Http/Kernel.php",
+      "BeforeSha256": "84459fd87c0fb0a313bcbe7fdc5cced51ab58141d619e4965b2e4aa999ffcc32",
+      "AfterSha256": "84459fd87c0fb0a313bcbe7fdc5cced51ab58141d619e4965b2e4aa999ffcc32",
+      "Unchanged": true
+    },
+    {
+      "File": ".env.example",
+      "BeforeSha256": "6bb3410b36c20ebbfa8b4bf6a3fb686b8d77fe395b59c50cb2d31e02a26b93d2",
+      "AfterSha256": "6bb3410b36c20ebbfa8b4bf6a3fb686b8d77fe395b59c50cb2d31e02a26b93d2",
+      "Unchanged": true
+    },
+    {
+      "File": "routes/api.php",
+      "BeforeSha256": "f72fcc89fed4eef6665a79ca13cd40f719025c353019213a9f6a80bf6b09ce0e",
+      "AfterSha256": "f72fcc89fed4eef6665a79ca13cd40f719025c353019213a9f6a80bf6b09ce0e",
+      "Unchanged": true
+    }
+  ],
+  "AllUnchanged": true
+}

@@ -1,0 +1,236 @@
+PHPUnit 11.5.57 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.26
+
+EEEEEEEEEEE                                                       11 / 11 (100%)
+
+Time: 00:01.971, Memory: 20.00 MB
+
+There were 11 errors:
+
+1) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #0 ([])
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+2) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #1 (['KTP'])
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+3) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #2 (['IJAZAH'])
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+4) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #3 (['KTP', 'IJAZAH'])
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+5) Tests\FpPostgres\F37HPostgresTest::test_admin_fills_bca_and_appends_document_replacements_without_overwriting_history
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+6) Tests\FpPostgres\F37HPostgresTest::test_optional_contract_still_rejects_fake_verification_and_missing_mm
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+7) Tests\FpPostgres\F37HPostgresTest::test_hrd_ro_keep_approval_rights_but_bm_cannot_approve_or_replace_documents
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+8) Tests\FpPostgres\F37HPostgresTest::test_nip_mm_document_versions_and_permissions_cannot_be_bypassed
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+9) Tests\FpPostgres\F37HPostgresTest::test_approval_failure_rolls_back_nip_membership_and_terminal_state
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+10) Tests\FpPostgres\F37HPostgresTest::test_archived_profile_metadata_is_preserved_but_new_photo_and_inactive_approval_are_denied
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+11) Tests\FpPostgres\F37HPostgresTest::test_optional_recruiter_and_admin_historical_correction_preserve_ownership_and_exit
+Exception: The C:\laragon\www\RO_management\D:/CodexF39Stage68Scratch/php-temp/f37h-postgres-13308 directory must be present and writable.
+
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:179
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:132
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:108
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:90
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\PackageManifest.php:79
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\RegisterFacades.php:26
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Application.php:350
+C:\laragon\www\RO_management\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:507
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:61
+
+--
+
+There were 11 risky tests:
+
+1) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #0 ([])
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:141
+
+2) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #1 (['KTP'])
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:141
+
+3) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #2 (['IJAZAH'])
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:141
+
+4) Tests\FpPostgres\F37HPostgresTest::test_registration_and_atomic_approval_without_manual_verification with data set #3 (['KTP', 'IJAZAH'])
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:141
+
+5) Tests\FpPostgres\F37HPostgresTest::test_admin_fills_bca_and_appends_document_replacements_without_overwriting_history
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:168
+
+6) Tests\FpPostgres\F37HPostgresTest::test_optional_contract_still_rejects_fake_verification_and_missing_mm
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:205
+
+7) Tests\FpPostgres\F37HPostgresTest::test_hrd_ro_keep_approval_rights_but_bm_cannot_approve_or_replace_documents
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:221
+
+8) Tests\FpPostgres\F37HPostgresTest::test_nip_mm_document_versions_and_permissions_cannot_be_bypassed
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:240
+
+9) Tests\FpPostgres\F37HPostgresTest::test_approval_failure_rolls_back_nip_membership_and_terminal_state
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:259
+
+10) Tests\FpPostgres\F37HPostgresTest::test_archived_profile_metadata_is_preserved_but_new_photo_and_inactive_approval_are_denied
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:282
+
+11) Tests\FpPostgres\F37HPostgresTest::test_optional_recruiter_and_admin_historical_correction_preserve_ownership_and_exit
+* Test code or tested code did not remove its own error handlers
+
+* Test code or tested code did not remove its own exception handlers
+
+C:\laragon\www\RO_management\tests\FpPostgres\F37HPostgresTest.php:307
+
+ERRORS!
+Tests: 11, Assertions: 0, Errors: 11, Risky: 11.

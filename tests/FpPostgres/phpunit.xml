@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="bootstrap.php" cacheResult="false">
+<testsuites><testsuite name="Disposable PostgreSQL F2 integration"><file>FpWorkflowPostgresTest.php</file></testsuite></testsuites>
+</phpunit>

@@ -5,6 +5,8 @@ services:
     init: true
     env_file:
       - .env
+    environment:
+      QUEUE_CONNECTION: database
     expose:
       - "80"
     volumes:
@@ -17,6 +19,21 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
+
+  queue:
+    build: .
+    restart: unless-stopped
+    init: true
+    env_file:
+      - .env
+    environment:
+      QUEUE_CONNECTION: database
+    # Shares web storage so the job can read locally staged FP documents.
+    volumes:
+      - ro_storage:/var/www/html/storage
+    networks:
+      - dokploy-network
+    command: ["php", "artisan", "queue:work", "database", "--queue=default", "--tries=5", "--timeout=180", "--sleep=3"]
 
 volumes:
   ro_storage:

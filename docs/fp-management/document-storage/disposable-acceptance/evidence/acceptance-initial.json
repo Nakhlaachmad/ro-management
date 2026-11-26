@@ -1,0 +1,23 @@
+{
+    "status": "PASS",
+    "database": "fp_f39_stage68_20261118",
+    "checks": [
+        "migration_transaction_rollback",
+        "migration_ledger_single_install",
+        "existing_synthetic_fixture_available",
+        "create_pending",
+        "idempotent_create",
+        "dry_run_missing",
+        "dry_run_no_audit_mutation",
+        "timeout_after_remote_created_uncertain",
+        "timeout_no_duplicate_or_delete",
+        "timeout_recovery_commits_matching_remote",
+        "recovery_does_not_reupload",
+        "reconciliation_repeat_idempotent",
+        "no_network_inside_database_transaction",
+        "cleanup_local_only_after_commit",
+        "canonical_remote_revision_tuple"
+    ],
+    "count": 15,
+    "real_dav": "BLOCKED"
+}

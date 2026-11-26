@@ -1,0 +1,1 @@
+@tesseract.js-data/eng 1.0.0, MIT metadata; https://github.com/naptha/tessdata; 4.0.0_best_int model.

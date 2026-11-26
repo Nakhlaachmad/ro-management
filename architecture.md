@@ -110,12 +110,13 @@ app/
 
 resources/
 ├── js/
-│   └── fp-onboarding/
-│       ├── camera.js
-│       ├── image-quality.js
-│       ├── ocr-worker.js
-│       ├── ktp-validator.js
-│       └── document-viewer.js
+│   └── fp/
+│       ├── onboarding.js
+│       ├── smart-documents.js
+│       ├── document-quality.js
+│       ├── ocr-client.js
+│       ├── quality-worker.js
+│       └── viewer.js
 └── views/
 ```
 

@@ -11,6 +11,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "@tailwindcss/forms": "^0.5.11"
+        "@tailwindcss/forms": "^0.5.11",
+        "@tesseract.js-data/eng": "1.0.0",
+        "tesseract.js": "7.0.0"
     }
 }

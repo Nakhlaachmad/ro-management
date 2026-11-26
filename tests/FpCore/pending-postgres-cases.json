@@ -1,0 +1,185 @@
+{
+  "Purpose": "Pending live PostgreSQL test matrix; no fake semantic PASS",
+  "Cases": [
+    {
+      "Case": "concurrent_same_nik_identity_resolution",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "cross_table_active_pending_conflict",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "pending_to_approved_without_membership",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "wrong_identity_submission_membership_claim",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "review_required_claim_acquisition",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "double_approval_same_submission",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "pending_to_rejected_claim_release",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "approved_or_rejected_to_pending_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "exited_to_active_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "new_null_evidence_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "legacy_null_nip_evidence_preserved",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "legacy_mgm_unresolved",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "new_nip_below_1001_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "duplicate_nip_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "nip_mutation_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "counter_decrease_reset_or_jump_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "counter_advance_without_allocation_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "allocation_without_counter_advance_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "rolled_back_approval_counter_claim_unchanged",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "concurrent_nip_allocations",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "typed_jalur_null_branches",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "inactive_fp_recruiter_at_approval_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "leader_inactive_or_wrong_team_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "leader_exit_requires_atomic_clear",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "actor_user_delete_preserves_snapshot",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "terminal_submission_mutation_denied",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "biodata_correction_resets_review",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "identity_correction_resets_document_review",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "new_schema_catalog_and_privileges",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    },
+    {
+      "Case": "populated_legacy_schema_preservation",
+      "Status": "NOT RUN / PENDING",
+      "Requires": "Separately authorized disposable PostgreSQL database writes",
+      "Verification": "Execute real transaction/constraint/concurrency case against accepted expected behavior"
+    }
+  ]
+}

@@ -38,7 +38,8 @@ return [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 90,
+            // Must exceed the longest Nextcloud publication attempt (see queue worker timeout).
+            'retry_after' => 300,
             'after_commit' => false,
         ],
 

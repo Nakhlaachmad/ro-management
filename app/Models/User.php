@@ -40,6 +40,11 @@ class User extends Authenticatable implements FilamentUser
     {
         // Semua role resmi dapat masuk panel, tetapi menu dan tindakan tetap
         // dibatasi oleh permission masing-masing di resource terkait.
+        // Opt-in Victory-managed local accounts stay within the Victory panel.
+        // Does not change SSO-linked or legacy-account eligibility.
+        if (config('fp.user_roles_enabled') && $this->getAttribute('fp_app_managed') && $this->sso_subject === null && $panel->getId() !== 'fp-dev') {
+            return false;
+        }
         return $this->is_active && $this->hasAnyRole(['admin', 'hrd', 'bm', 'ro']);
     }
 

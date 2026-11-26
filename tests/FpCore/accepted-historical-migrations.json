@@ -1,0 +1,10 @@
+{
+  "database/migrations/2014_10_12_000000_create_users_table.php": "cd605d03471c325b24b8d1e4f5f44e02369636142da6060c2a26ccbf316263cf",
+  "database/migrations/2014_10_12_100000_create_password_reset_tokens_table.php": "dca550bb71abdc837debddc9baa9e14f85dd121cd78dc811cdae07a54656252a",
+  "database/migrations/2019_08_19_000000_create_failed_jobs_table.php": "1b2dc826a38de3e6cdd351fc5e0b96689440086e8027454453347036f1860ef3",
+  "database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php": "5a9c64d94d29ec6c435625b8a4d0d3c898b9bad042b5a3ac64f11d39c2b3610f",
+  "database/migrations/2026_02_11_041952_create_permission_tables.php": "9be723cec2a8625506c8e0073a4bbabca1fbb08dbbbfb67ab55fe3e93d7298f0",
+  "database/migrations/2026_02_11_045958_create_teams_table.php": "db67ec72f6b5871f301cfea78b77d33124a5539c91b19c514fbc33338b5947d9",
+  "database/migrations/2026_02_11_055935_create_fps_table.php": "3b11c36e2a24205c4b2b0523c12bd515ba27d224d28e121e378ff55ef1ab3e13",
+  "database/migrations/2026_09_03_233000_add_iwacs_sync_fields_to_users_table.php": "ca3220f8d0f62600b3fa8a5912839e4154f92077476290aff146852343e24112"
+}
