@@ -51,23 +51,32 @@ akun RO lokal sebelum membuat session panel.
 
 ## Kesiapan produksi FP
 
-Kode FP sudah siap di branch `feat/fp-management` (`c33d0eb`) dengan
-`FP_ENABLED=false` sebagai default. Sebelum deploy produksi/aktivasi FP:
+Kode FP sudah siap di branch `feat/fp-management`. Paket produksi mencakup:
 
-1. Terima dari Nakhla migrasi **F39 versi produksi**. Migrasi F39 yang ada di
-   repo saat ini hanya untuk disposable stage `fp_f39_stage68_*` dan cluster
-   tertentu, jangan dijalankan di produksi.
-2. Terima konfigurasi role database produksi: owner, app role, grant, hak
-   sequence/function, serta kebijakan RLS/keamanan.
-3. Isi konfigurasi FP di Dokploy, bukan Git. Lihat
+1. SQL tahunan `database/sql/2026_10_13_fp_annual_email_role.sql` yang ikut
+   terdeploy dan dijalankan oleh migrasi `2026_10_13_000001`.
+2. Migrasi F39 produksi
+   `2026_11_26_000001_add_f39_production_document_operations.php`.
+   Migrasi `2026_11_18_*` tetap hanya untuk stage disposable dan otomatis
+   dilewati pada target produksi.
+3. Konfigurasi role via `FP_DB_APP_ROLE` (default `DB_USERNAME`). Migrasi
+   produksi memberi grant F39 read-only, grant counter NIP tahunan, dan
+   `EXECUTE` pada `fp_victory_user_command` kepada role tersebut.
+
+Sebelum deploy produksi/aktivasi FP:
+
+1. Isi `FP_DB_APP_ROLE`, `FP_NIK_LOOKUP_KEY`, `FP_NIK_LOOKUP_KEY_ID`, dan
+   kredensial Nextcloud di Dokploy, bukan di Git. Lihat
    [`production-activation.md`](fp-management/production-activation.md).
-4. Jalankan migrasi produksi hanya setelah artefak di atas diverifikasi.
-5. Aktifkan `FP_ENABLED=true` dan clear/cache konfigurasi setelah migrasi sukses.
-6. Pastikan SSO/JWT/IWACS tidak berubah dan akun HRD/legacy `ro` masih bisa
+2. Jalankan `php artisan config:clear`, lalu `php artisan migrate --force`
+   sekali dengan role migrator yang sah.
+3. Verifikasi grant/role, lalu set `FP_ENABLED=true` dan clear/cache
+   konfigurasi.
+4. Pastikan SSO/JWT/IWACS tidak berubah dan akun HRD/legacy `ro` masih bisa
    masuk. `bm` tidak otomatis dipetakan ke HRD.
 
-Belum boleh ada `php artisan migrate --force` atau `FP_ENABLED=true` di
-produksi selama butir 1 dan 2 belum diterima.
+Migration produksi bersifat forward-only. Jangan menjalankannya pada database
+disposable yang sudah memiliki tabel `fp_document_operations`.
 
 ## Catatan operasional
 

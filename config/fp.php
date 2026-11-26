@@ -22,6 +22,9 @@ return [
     'business_timezone' => env('FP_BUSINESS_TIMEZONE'),
     'nik_lookup_key' => env('FP_NIK_LOOKUP_KEY'),
     'nik_lookup_key_id' => env('FP_NIK_LOOKUP_KEY_ID'),
+    // Database role used by the application runtime. Production grants are
+    // applied to this role, never to a hard-coded disposable role.
+    'db_app_role' => (string) (env('FP_DB_APP_ROLE') ?: env('DB_USERNAME', '')),
     'annual_nip_email_enabled' => $fpEnabled && env('FP_ANNUAL_NIP_EMAIL_ENABLED', false),
     'user_roles_enabled' => $fpEnabled && env('FP_USER_ROLES_ENABLED', false),
     'recruitment_team_enabled' => $fpEnabled && env('FP_RECRUITMENT_TEAM_ENABLED', false),

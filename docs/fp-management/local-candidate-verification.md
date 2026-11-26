@@ -67,13 +67,20 @@ dapat dipakai di produksi setelah approvasi.
 
 ## Keputusan
 
-Kandidat lokal **tidak membuka blokir deploy produksi**. Yang sudah terverifikasi
-hanya kesamaan SQL tahunan. Blokir yang masih berlaku:
+Kandidat lokal mengonfirmasi SQL tahunan yang sudah track di repo. Blokir kode
+untuk deploy produksi sudah ditutup dengan:
 
-1. migrasi F39 versi produksi dari Nakhla;
-2. konfigurasi role/grant database produksi;
-3. konfirmasi tertulis bahwa SQL tahunan final untuk produksi;
-4. environment/secret produksi di Dokploy;
-5. approval eksekusi produksi.
+1. migrasi F39 produksi
+   `database/migrations/2026_11_26_000001_add_f39_production_document_operations.php`;
+2. dua migrasi F39 lama yang kini dilewati pada target non-disposable;
+3. konfigurasi role aplikasi via `FP_DB_APP_ROLE` dan grant produksi;
+4. gate opt-in `FP_ENABLED=true` yang berlaku di semua `APP_ENV`.
 
-Tidak ada migrasi, perubahan data, atau deploy produksi yang dilakukan.
+Yang masih menjadi tanggung jawab operator sebelum eksekusi produksi:
+
+1. mengisi secret/environment produksi di Dokploy;
+2. menjalankan migrasi dengan role migrator produksi yang sah;
+3. melakukan cutover/deploy setelah verifikasi grant.
+
+Tidak ada migrasi, perubahan data, atau deploy produksi yang dilakukan dari
+dokumen verifikasi ini.

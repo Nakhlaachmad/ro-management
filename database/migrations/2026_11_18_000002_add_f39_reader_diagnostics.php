@@ -14,10 +14,17 @@ return new class extends Migration
             return;
         }
 
+        if (DB::connection()->getDriverName() !== 'pgsql') {
+            throw new LogicException('F39 requires PostgreSQL');
+        }
         $identity = DB::selectOne('SELECT current_database() db,(SELECT system_identifier::text FROM pg_control_system()) cluster');
-        if (DB::connection()->getDriverName() !== 'pgsql' || DB::transactionLevel() < 1
-            || ! preg_match('/\Afp_f39_stage68_[0-9]+\z/', $identity->db)
-            || $identity->cluster !== '7694154787604477244') {
+        $isDisposable = preg_match('/\Afp_f39_stage68_[0-9]+\z/', $identity->db) === 1
+            && $identity->cluster === '7694154787604477244';
+        if (! $isDisposable) {
+            // Production uses 2026_11_26_000001_add_f39_production_document_operations.
+            return;
+        }
+        if (DB::transactionLevel() < 1) {
             throw new LogicException('Verified F39 disposable transaction required');
         }
         DB::unprepared(<<<'SQL'

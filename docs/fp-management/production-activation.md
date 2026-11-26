@@ -15,16 +15,21 @@ Hasil pemeriksaan kandidat SQL lokal ada di
 2. Pastikan `database/sql/2026_10_13_fp_annual_email_role.sql` ikut terdeploy.
    Berkas ini sudah dikecualikan dari aturan ignore `*.sql` di `.gitignore`
    dan `.dockerignore`.
-3. Migrasi F39 yang ada di repo masih bertujuan untuk disposable stage
-   `fp_f39_stage68_*` dan cluster tertentu. Minta versi produksi dari Nakhla
-   beserta konfigurasi role database sebelum menjalankan deploy produksi.
-4. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
-5. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
+3. Migrasi F39 produksi tersedia di
+   `database/migrations/2026_11_26_000001_add_f39_production_document_operations.php`.
+   Dua migrasi F39 lama (`2026_11_18_*`) kini hanya berlaku untuk stage
+   disposable `fp_f39_stage68_*` dan tidak memasang skema di produksi.
+4. Set `FP_DB_APP_ROLE` sama dengan role aplikasi produksi (`DB_USERNAME`).
+   Migrasi F39 produksi memberikan grant baca pada jurnal F39, grant
+   `SELECT/INSERT/UPDATE(next_serial)` pada counter NIP tahunan, dan
+   `EXECUTE` pada `fp_victory_user_command` kepada role tersebut.
+5. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
+6. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
    - `FP_NIK_LOOKUP_KEY`
    - `FP_NIK_LOOKUP_KEY_ID`
    - kredensial Nextcloud bila `FP_STORAGE_ADAPTER=nextcloud`
-6. Tetapkan timezone bisnis, misalnya `FP_BUSINESS_TIMEZONE=Asia/Jakarta`.
-7. Biarkan flag opsional (`FP_USER_MANAGEMENT_ENABLED`,
+7. Tetapkan timezone bisnis, misalnya `FP_BUSINESS_TIMEZONE=Asia/Jakarta`.
+8. Biarkan flag opsional (`FP_USER_MANAGEMENT_ENABLED`,
    `FP_ANNUAL_NIP_EMAIL_ENABLED`, `FP_USER_ROLES_ENABLED`,
    `FP_RECRUITMENT_TEAM_ENABLED`, `FP_ORGANIZATION_ENABLED`,
    `FP_OPTIONAL_ONBOARDING_ENABLED`) dalam keadaan `false` kecuali
@@ -33,8 +38,8 @@ Hasil pemeriksaan kandidat SQL lokal ada di
 ## Langkah deploy
 
 ```bash
-php artisan migrate --force
 php artisan config:clear
+php artisan migrate --force
 php artisan config:cache
 php artisan route:clear
 php artisan view:clear
@@ -52,6 +57,7 @@ php artisan test
 php vendor/bin/pint --test config/fp.php config/app.php \
   app/Providers/Filament/FpDevelopmentPanelProvider.php \
   tests/FpCore/DomainMetadataTest.php \
+  tests/FpCore/F39ProductionMigrationTest.php \
   tests/FpCore/IntegratedOfflineTest.php \
   tests/FpCore/SqliteMigrationIsolationTest.php
 ```
