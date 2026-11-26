@@ -12,13 +12,16 @@ rahasia selesai diverifikasi.
 2. Pastikan `database/sql/2026_10_13_fp_annual_email_role.sql` ikut terdeploy.
    Berkas ini sudah dikecualikan dari aturan ignore `*.sql` di `.gitignore`
    dan `.dockerignore`.
-3. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
-4. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
+3. Migrasi F39 yang ada di repo masih bertujuan untuk disposable stage
+   `fp_f39_stage68_*` dan cluster tertentu. Minta versi produksi dari Nakhla
+   beserta konfigurasi role database sebelum menjalankan deploy produksi.
+4. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
+5. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
    - `FP_NIK_LOOKUP_KEY`
    - `FP_NIK_LOOKUP_KEY_ID`
    - kredensial Nextcloud bila `FP_STORAGE_ADAPTER=nextcloud`
-5. Tetapkan timezone bisnis, misalnya `FP_BUSINESS_TIMEZONE=Asia/Jakarta`.
-6. Biarkan flag opsional (`FP_USER_MANAGEMENT_ENABLED`,
+6. Tetapkan timezone bisnis, misalnya `FP_BUSINESS_TIMEZONE=Asia/Jakarta`.
+7. Biarkan flag opsional (`FP_USER_MANAGEMENT_ENABLED`,
    `FP_ANNUAL_NIP_EMAIL_ENABLED`, `FP_USER_ROLES_ENABLED`,
    `FP_RECRUITMENT_TEAM_ENABLED`, `FP_ORGANIZATION_ENABLED`,
    `FP_OPTIONAL_ONBOARDING_ENABLED`) dalam keadaan `false` kecuali

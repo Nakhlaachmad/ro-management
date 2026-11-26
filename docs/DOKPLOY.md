@@ -49,6 +49,26 @@ akun RO lokal sebelum membuat session panel.
 3. Ikuti `docs/POSTGRESQL_MIGRATION.md` untuk memindahkan data MariaDB aktif.
 4. Setelah verifikasi, hapus `LEGACY_MYSQL_*` dari Dokploy dan deploy ulang.
 
+## Kesiapan produksi FP
+
+Kode FP sudah siap di branch `feat/fp-management` (`c33d0eb`) dengan
+`FP_ENABLED=false` sebagai default. Sebelum deploy produksi/aktivasi FP:
+
+1. Terima dari Nakhla migrasi **F39 versi produksi**. Migrasi F39 yang ada di
+   repo saat ini hanya untuk disposable stage `fp_f39_stage68_*` dan cluster
+   tertentu, jangan dijalankan di produksi.
+2. Terima konfigurasi role database produksi: owner, app role, grant, hak
+   sequence/function, serta kebijakan RLS/keamanan.
+3. Isi konfigurasi FP di Dokploy, bukan Git. Lihat
+   [`production-activation.md`](fp-management/production-activation.md).
+4. Jalankan migrasi produksi hanya setelah artefak di atas diverifikasi.
+5. Aktifkan `FP_ENABLED=true` dan clear/cache konfigurasi setelah migrasi sukses.
+6. Pastikan SSO/JWT/IWACS tidak berubah dan akun HRD/legacy `ro` masih bisa
+   masuk. `bm` tidak otomatis dipetakan ke HRD.
+
+Belum boleh ada `php artisan migrate --force` atau `FP_ENABLED=true` di
+produksi selama butir 1 dan 2 belum diterima.
+
 ## Catatan operasional
 
 - Jangan menyimpan `.env`, dump SQL, password, atau private key di GitHub.
