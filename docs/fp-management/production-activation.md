@@ -26,13 +26,16 @@ Hasil pemeriksaan kandidat SQL lokal ada di
    Jika `php artisan migrate` dijalankan dengan role migrator yang berbeda,
    `FP_DB_APP_ROLE` wajib diisi eksplisit; jangan mengandalkan `DB_USERNAME`
    karena nilai itu akan berubah menjadi role migrator selama proses migrasi.
-5. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
-6. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
+5. Pastikan environment produksi memakai `APP_ENV=production`,
+   `APP_DEBUG=false`, dan `APP_URL` dengan domain produksi. `.env` lokal tidak
+   ikut terdeploy; nilai produksi harus diisi di Dokploy.
+6. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
+7. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
    - `FP_NIK_LOOKUP_KEY`
    - `FP_NIK_LOOKUP_KEY_ID`
    - kredensial Nextcloud bila `FP_STORAGE_ADAPTER=nextcloud`
-7. Tetapkan timezone bisnis, misalnya `FP_BUSINESS_TIMEZONE=Asia/Jakarta`.
-8. Biarkan flag opsional (`FP_USER_MANAGEMENT_ENABLED`,
+8. Tetapkan timezone bisnis, misalnya `FP_BUSINESS_TIMEZONE=Asia/Jakarta`.
+9. Biarkan flag opsional (`FP_USER_MANAGEMENT_ENABLED`,
    `FP_ANNUAL_NIP_EMAIL_ENABLED`, `FP_USER_ROLES_ENABLED`,
    `FP_RECRUITMENT_TEAM_ENABLED`, `FP_ORGANIZATION_ENABLED`,
    `FP_OPTIONAL_ONBOARDING_ENABLED`) dalam keadaan `false` kecuali

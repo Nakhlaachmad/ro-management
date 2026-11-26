@@ -65,15 +65,17 @@ Kode FP sudah siap di branch `feat/fp-management`. Paket produksi mencakup:
 
 Sebelum deploy produksi/aktivasi FP:
 
-1. Isi `FP_DB_APP_ROLE` secara eksplisit (terutama bila migrasi memakai role
+1. Set `APP_ENV=production`, `APP_DEBUG=false`, dan `APP_URL` dengan domain
+   produksi di Dokploy. `.env` lokal tidak ikut terdeploy.
+2. Isi `FP_DB_APP_ROLE` secara eksplisit (terutama bila migrasi memakai role
    migrator terpisah), `FP_NIK_LOOKUP_KEY`, `FP_NIK_LOOKUP_KEY_ID`, dan
    kredensial Nextcloud di Dokploy, bukan di Git. Lihat
    [`production-activation.md`](fp-management/production-activation.md).
-2. Jalankan `php artisan config:clear`, lalu `php artisan migrate --force`
+3. Jalankan `php artisan config:clear`, lalu `php artisan migrate --force`
    sekali dengan role migrator yang sah.
-3. Verifikasi grant/role, lalu set `FP_ENABLED=true` dan clear/cache
+4. Verifikasi grant/role, lalu set `FP_ENABLED=true` dan clear/cache
    konfigurasi.
-4. Pastikan SSO/JWT/IWACS tidak berubah dan akun HRD/legacy `ro` masih bisa
+5. Pastikan SSO/JWT/IWACS tidak berubah dan akun HRD/legacy `ro` masih bisa
    masuk. `bm` tidak otomatis dipetakan ke HRD.
 
 Migration produksi bersifat forward-only. Jangan menjalankannya pada database
