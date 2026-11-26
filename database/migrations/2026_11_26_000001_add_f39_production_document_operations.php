@@ -29,11 +29,14 @@ return new class extends Migration
         if (! DB::selectOne("SELECT to_regprocedure('public.f37_append_only()') IS NOT NULL AS ok")->ok) {
             throw new LogicException('F39 prerequisite function missing');
         }
-        if (DB::selectOne("SELECT to_regclass('public.fp_document_operations') IS NOT NULL AS ok")->ok) {
-            return;
+        $operationsInstalled = DB::selectOne("SELECT to_regclass('public.fp_document_operations') IS NOT NULL AS ok")->ok;
+        $eventsInstalled = DB::selectOne("SELECT to_regclass('public.fp_document_operation_events') IS NOT NULL AS ok")->ok;
+        if ($operationsInstalled !== $eventsInstalled) {
+            throw new LogicException('F39 partial schema detected; manual inspection required');
         }
 
-        DB::unprepared(<<<'SQL'
+        if (! $operationsInstalled) {
+            DB::unprepared(<<<'SQL'
 CREATE TABLE public.fp_document_operations (
  uuid uuid PRIMARY KEY,
  operation_type text NOT NULL CHECK(operation_type='ADMIN_DOCUMENT_AMENDMENT'),
@@ -141,11 +144,12 @@ REVOKE ALL ON public.fp_document_operations,public.fp_document_operation_events 
 REVOKE ALL ON FUNCTION public.f39_operation_guard(),public.f39_revision_guard(),public.f39_final_guard() FROM PUBLIC;
 SQL);
 
-        DB::unprepared(<<<'SQL'
+            DB::unprepared(<<<'SQL'
 ALTER TABLE public.fp_document_operation_events DROP CONSTRAINT fp_document_operation_events_action_check;
 ALTER TABLE public.fp_document_operation_events ADD CONSTRAINT fp_document_operation_events_action_check
  CHECK(action IN ('CREATED','CLAIMED','TRANSITION','DEFERRED','RECONCILED'));
 SQL);
+        }
 
         $role = (string) config('fp.db_app_role');
         if ($role === '' || preg_match('/\A[A-Za-z_][A-Za-z0-9_]*\z/', $role) !== 1) {

@@ -65,7 +65,8 @@ Kode FP sudah siap di branch `feat/fp-management`. Paket produksi mencakup:
 
 Sebelum deploy produksi/aktivasi FP:
 
-1. Isi `FP_DB_APP_ROLE`, `FP_NIK_LOOKUP_KEY`, `FP_NIK_LOOKUP_KEY_ID`, dan
+1. Isi `FP_DB_APP_ROLE` secara eksplisit (terutama bila migrasi memakai role
+   migrator terpisah), `FP_NIK_LOOKUP_KEY`, `FP_NIK_LOOKUP_KEY_ID`, dan
    kredensial Nextcloud di Dokploy, bukan di Git. Lihat
    [`production-activation.md`](fp-management/production-activation.md).
 2. Jalankan `php artisan config:clear`, lalu `php artisan migrate --force`

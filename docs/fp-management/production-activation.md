@@ -23,6 +23,9 @@ Hasil pemeriksaan kandidat SQL lokal ada di
    Migrasi F39 produksi memberikan grant baca pada jurnal F39, grant
    `SELECT/INSERT/UPDATE(next_serial)` pada counter NIP tahunan, dan
    `EXECUTE` pada `fp_victory_user_command` kepada role tersebut.
+   Jika `php artisan migrate` dijalankan dengan role migrator yang berbeda,
+   `FP_DB_APP_ROLE` wajib diisi eksplisit; jangan mengandalkan `DB_USERNAME`
+   karena nilai itu akan berubah menjadi role migrator selama proses migrasi.
 5. Jalankan migrasi dan verifikasi grant/role sebelum menyalakan FP.
 6. Isi konfigurasi rahasia langsung di Dokploy, bukan di `.env` yang di-commit:
    - `FP_NIK_LOOKUP_KEY`

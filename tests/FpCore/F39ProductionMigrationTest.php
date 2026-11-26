@@ -36,6 +36,13 @@ final class F39ProductionMigrationTest extends TestCase
         self::assertStringContainsString('GRANT SELECT ON TABLE public.fp_document_operations', $code);
         self::assertStringContainsString('GRANT UPDATE (next_serial) ON TABLE public.fp_nip_year_counters', $code);
         self::assertStringContainsString('GRANT EXECUTE ON FUNCTION public.fp_victory_user_command', $code);
+        self::assertStringContainsString('F39 partial schema detected', $code);
+
+        $schemaBlockEnd = strpos($code, "SQL);\n        }");
+        $grantPosition = strpos($code, 'GRANT SELECT ON TABLE public.fp_document_operations');
+        self::assertNotFalse($schemaBlockEnd);
+        self::assertNotFalse($grantPosition);
+        self::assertGreaterThan($schemaBlockEnd, $grantPosition, 'grants must also run when the F39 schema already exists');
     }
 
     public function test_production_role_is_configured_and_documented(): void

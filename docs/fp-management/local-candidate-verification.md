@@ -82,5 +82,17 @@ Yang masih menjadi tanggung jawab operator sebelum eksekusi produksi:
 2. menjalankan migrasi dengan role migrator produksi yang sah;
 3. melakukan cutover/deploy setelah verifikasi grant.
 
-Tidak ada migrasi, perubahan data, atau deploy produksi yang dilakukan dari
-dokumen verifikasi ini.
+## Verifikasi eksekusi lokal
+
+Migrasi produksi F39 dijalankan pada target sintetis
+`fp_management_synthetic_dev`, bukan produksi. Tabel
+`fp_document_operations` dan `fp_document_operation_events` terpasang, dan
+grant aplikasi terverifikasi:
+
+- `SELECT` pada kedua tabel jurnal F39;
+- `SELECT`, `INSERT`, dan `UPDATE(next_serial)` pada `fp_nip_year_counters`;
+- `EXECUTE` pada `fp_victory_user_command`.
+
+Aturan sementara `pg_hba.conf` yang dipakai untuk role migrator lokal sudah
+dikembalikan ke konfigurasi semula. Tidak ada migrasi, perubahan data, atau
+deploy produksi yang dilakukan dari dokumen verifikasi ini.
