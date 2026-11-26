@@ -95,7 +95,7 @@ final class DomainMetadataTest extends TestCase
         (new FpIdentityClaim)->$method();
     }
 
-    public function test_activation_remains_disabled_and_evidence_models_are_now_available(): void
+    public function test_activation_is_explicit_opt_in_and_evidence_models_are_available(): void
     {
         $root = dirname(__DIR__, 2);
         foreach ([['testing', false, false], ['production', true, true], ['local', true, true]] as [$environment, $optIn, $enabled]) {

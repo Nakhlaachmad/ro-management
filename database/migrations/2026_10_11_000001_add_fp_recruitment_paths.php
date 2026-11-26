@@ -65,6 +65,11 @@ SQL;
 
     public function up(): void
     {
+        // FP_SQLITE_TEST_SKIP: SQLite is only for isolated HTTP characterization tests.
+        if (DB::connection()->getDriverName() !== 'pgsql' && app()->environment('testing')) {
+            return;
+        }
+
         if (DB::connection()->getDriverName() !== 'pgsql') {
             throw new LogicException('F3 requires PostgreSQL');
         }

@@ -6,6 +6,7 @@
 | F3.7 | Redesign UI/UX Premium Corporate × Modern SaaS | F3.7B: TECHNICAL PASS; VISUAL ACCEPTANCE menunggu review operator |
 | F3.8 | Acceptance fungsional F3.6 yang tertunda | Backlog; referensi operational-acceptance-backlog.md |
 | Nextcloud | Integrasi private storage asynchronous | Technical PARTIAL, menunggu penetapan fase lanjutan |
+| Aktivasi produksi | Opt-in eksplisit `FP_ENABLED=true` | SIAP untuk diaktifkan operator; lihat `production-activation.md` |
 
 Laporan Nextcloud yang sebelumnya salah diberi label F3.7 merupakan riwayat
 pekerjaan teknis, **bukan progress fase F3.7 UI/UX**. Adapter, registry dan test

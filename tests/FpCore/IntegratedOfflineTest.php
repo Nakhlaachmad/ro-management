@@ -155,7 +155,19 @@ final class IntegratedOfflineTest extends TestCase
         self::assertStringContainsString('FpReportAuthenticate::class', $routes);
         self::assertTrue(is_subclass_of(\App\Http\Middleware\FpReportAuthenticate::class, \Illuminate\Auth\Middleware\Authenticate::class));
         self::assertStringContainsString('FpEnabled::class', $routes);
-        self::assertStringContainsString('$fpEnabled = env(\'FP_ENABLED\', false);', file_get_contents($root.'/config/fp.php'));
+
+        $fpConfig = file_get_contents($root.'/config/fp.php');
+        self::assertStringContainsString('$fpEnabled = env(\'FP_ENABLED\', false);', $fpConfig);
+        self::assertStringNotContainsString("env('APP_ENV') === 'local'", $fpConfig);
+
+        $appConfig = file_get_contents($root.'/config/app.php');
+        self::assertStringContainsString("])->merge(env('FP_ENABLED', false) ? [", $appConfig);
+        self::assertStringNotContainsString("env('APP_ENV') === 'local'", $appConfig);
+
+        $panelProvider = file_get_contents($root.'/app/Providers/Filament/FpDevelopmentPanelProvider.php');
+        self::assertStringContainsString('FP panel requires FP_ENABLED', $panelProvider);
+        self::assertStringNotContainsString('local-only', $panelProvider);
+
         $job = file_get_contents($root.'/app/Jobs/FP/DeleteRejectedDocuments.php');
         self::assertStringContainsString('afterCommit()', $job);
         self::assertStringContainsString('DOCUMENT_CHANGED', file_get_contents($root.'/app/Application/FP/FpEngine.php'));

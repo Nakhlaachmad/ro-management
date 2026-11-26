@@ -9,6 +9,11 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // FP_SQLITE_TEST_SKIP: SQLite is only for isolated HTTP characterization tests.
+        if (DB::connection()->getDriverName() !== 'pgsql' && app()->environment('testing')) {
+            return;
+        }
+
         $identity = DB::selectOne('SELECT current_database() db,(SELECT system_identifier::text FROM pg_control_system()) cluster');
         if (DB::connection()->getDriverName() !== 'pgsql' || DB::transactionLevel() < 1
             || ! preg_match('/\Afp_f39_stage68_[0-9]+\z/', $identity->db)
