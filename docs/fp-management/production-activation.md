@@ -5,6 +5,9 @@ Gate lama `APP_ENV=local && FP_ENABLED` sudah dihapus, sehingga aplikasi
 produksi dapat menjalankan FP setelah migrasi, grant, dan konfigurasi
 rahasia selesai diverifikasi.
 
+Hasil pemeriksaan kandidat SQL lokal ada di
+[`local-candidate-verification.md`](local-candidate-verification.md).
+
 ## Prasyarat
 
 1. Gunakan PostgreSQL. Migrasi FP bersifat fail-closed di luar environment
